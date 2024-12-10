@@ -29,6 +29,7 @@ export default function Signup() {
   const [isFocused5, setIsFocused5] = useState(false);
   const [hidden, setHidden] = useState(true)
   const [hidden2, setHidden2] = useState(true)
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate()
   const {
     register,
@@ -42,36 +43,69 @@ export default function Signup() {
   )
 
   const onSubmit = (data) => {
-    console.log(data.password)
-    console.log(data.password2)
+    setLoading(true); // Show spinner at the start
+    console.log(data);
+  
     if (data.password === data.password2) {
-      console.log(data)
-      axios.post("http://localhost:3002/auth/signup", data)
-      .then(result=>{
-        if(result.status==201) {
-          console.log("user created successfully")
-          navigate("/Login")
-        }
-      })
-      .catch (err => {
-        if (err.response && err.response.status===400) {
-          window.alert("Email already exist. pleas use a different Email")
-        }else {
-          console.log(err);
-          
-        }
-      })
-      
+      // Passwords match, proceed with API call
+      axios
+        .post("http://localhost:3002/auth/signup", data)
+        .then((result) => {
+          if (result.status === 201) {
+            console.log("User created successfully");
+            toast(
+              <div className="h-[84px] w-[357px] mx-auto text-[#00A86B] text-center bg-[#DDDDDD] border-2 border-dashed border-[#00A86B] flex flex-col rounded-[32px] justify-center items-center">
+                User created successfully. Redirecting to login...
+              </div>,
+              {
+                position: "top-center",
+                duration: 3000,
+              }
+            );
+            setTimeout(() => navigate("/Login"), 3000); // Delay navigation for better UX
+          }
+        })
+        .catch((err) => {
+          if (err.response && err.response.status === 400) {
+            toast(
+              <div className="h-[84px] w-[357px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A] flex flex-col rounded-[32px] justify-center items-center">
+                Email already exists. Please use a different email.
+              </div>,
+              {
+                position: "top-center",
+                duration: 5000,
+              }
+            );
+          } else {
+            console.error("Unexpected error:", err);
+            toast(
+              <div className="h-[84px] w-[357px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A] flex flex-col rounded-[32px] justify-center items-center">
+                Something went wrong. Please try again later.
+              </div>,
+              {
+                position: "top-center",
+                duration: 5000,
+              }
+            );
+          }
+        })
+        .finally(() => {
+          setLoading(false); // Hide spinner after API call
+        });
     } else {
-      toast(<div className="h-[84px] w-[357px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A]  flex flex-col rounded-[32px] justify-center items-center]">Password does not match</div>, {
-        position: 'top-center',
-        classNames: {
-          cancelButton: 'bg-orange-400'
-        },
-        duration: 5000,
-      })
+      // Passwords do not match
+      toast(
+        <div className="h-[84px] w-[357px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A] flex flex-col rounded-[32px] justify-center items-center">
+          Passwords do not match. Please try again.
+        </div>,
+        {
+          position: "top-center",
+          duration: 5000,
+        }
+      );
     }
-  }
+  };
+  
   const email = watch("email"); // watch input value
   const fullname = watch("fullname"); // watch input value
   const password = watch("password"); // watch input value
@@ -113,6 +147,13 @@ export default function Signup() {
    
   return (
     <div className="mt-[96px] py-32 px-4 flex flex-col content-center items-center">
+      {loading && (
+        <div className="fixed inset-0 bg-white bg-opacity-70 flex justify-center items-center z-50">
+          <div className=" relative w-24 h-24 border-[10px] border-black border-opacity-30  rounded-full animate-spin-slow flex justify-center items-center">
+            <div className=" absolute w-24 h-24 border-[10px] border-[#E2063A] border-t-transparent border-b-transparent border-l-transparent rounded-full animate-spin"></div>
+          </div>
+        </div>
+      )}
       <div className="max-w-[482px]">
         <p className="text-center mb-2 text-[#9A9A9A] font-poopins font-medium text-[16px] leading-[26px] lg:font-nexa-bold lg:text-[36px] lg:leading-[48px] lg:mb-4">Create Account</p>
         <p className="text-center mt-2 font-poopins text-[14px] leading-[22px] lg:text-[20px] lg:leading-[32px]">Create your account for smooth and uninterrupted experience with us</p>

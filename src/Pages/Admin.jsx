@@ -11,8 +11,6 @@ import ba from "../assets/Images/barrow.svg";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
-
-
 import { Context } from "../App";
 
 const schema = z.object({
@@ -22,7 +20,7 @@ const schema = z.object({
   .regex(/[@$!%*?&]/, "Password must contain at least one special character (e.g., @, $, !, %, *, ?, &)"), */,
 });
 
-export default function Login() {
+export default function Amin() {
   const [isFocused, setIsFocused] = useState(false);
   const [isFocused2, setIsFocused2] = useState(false);
   const [hidden, setHidden] = useState(true);
@@ -34,6 +32,7 @@ export default function Login() {
     register,
     handleSubmit,
     watch,
+
     formState: { errors },
   } = useForm({
     resolver: zodResolver(schema),
@@ -42,48 +41,37 @@ export default function Login() {
   const onSubmit = (data) => {
     setLoading(true); // Show spinner
     axios
-      .post("http://localhost:3002/auth/login", data)
+      .post("http://localhost:3002/auth/ALogin", data)
       .then((result) => {
         if (result.data === "Success") {
-          toast(
-            <div className="h-[84px] w-[357px] mx-auto text-[#00A86B] text-center bg-[#DDDDDD] border-2 border-dashed border-[#00A86B] flex flex-col rounded-[32px] justify-center items-center">
-              Login successfully. Redirecting...
-            </div>,
-            {
-              position: "top-center",
-              duration: 3000,
-            }
-          );
-          setTimeout(() => navigate("/view"), 3000);
           setIsLogin(true);
           localStorage.setItem("isLogin", true);
-          localStorage.setItem("email", data.email);
+          navigate("/data");
         } else {
-          alert("login failed: User Does not exist");
-  
+          alert("Login failed: User does not exist");
         }
       })
       .catch((err) => {
-        // Extract error details, if available
-        const errorMessage = err.response
-          ? err.response.data
-          : err.message;
-        
-  
-        // Show the error in an alert
-        toast(<div className="h-[84px] w-[357px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A]  flex flex-col rounded-[32px] justify-center items-center]">{errorMessage}</div>, {
-          position: 'top-center',
-          classNames: {
-            cancelButton: 'bg-orange-400'
-          },
-          duration: 5000,
-        })
-       
+        setLoading(true);
+        const errorMessage = err.response ? err.response.data : err.message;
+        toast(
+          <div className="h-[84px] w-[357px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A] flex flex-col rounded-[32px] justify-center items-center]">
+            {errorMessage}
+          </div>,
+          {
+            position: "top-center",
+            classNames: {
+              cancelButton: "bg-orange-400",
+            },
+            duration: 5000,
+          }
+        );
       })
       .finally(() => {
         setLoading(false); // Hide spinner
       });
   };
+  
   const email = watch("email"); // watch input value
   const password = watch("password"); // watch input value
 
@@ -115,7 +103,6 @@ export default function Login() {
   }, [errors]);
 
   return (
-    
     <div className="mt-[96px] py-32 px-4 flex flex-col content-center items-center">
       {loading && (
         <div className="fixed inset-0 bg-white bg-opacity-70 flex justify-center items-center z-50">
@@ -197,14 +184,14 @@ export default function Login() {
 
           <button
             type="submit"
-            className="bg-[#E2063A] mt-4 text-white  rounded-full relative overflow-hidden group lg:h-[72px] lg:w-full  w-[100%]"
+            className="bg-[#E2063A] mt-4 text-white bg  rounded-full relative overflow-hidden group lg:h-[72px] lg:w-full  w-[100%]"
             disabled={
-              password?.trim()?.length === 0 && email?.trim()?.length === 0
+              password?.trim()?.length === 0 || email?.trim()?.length === 0
             }
           >
             <div
               className={`${
-                password?.trim()?.length === 0 && email?.trim()?.length === 0
+                password?.trim()?.length === 0 || email?.trim()?.length === 0
                   ? "inset-0 bg-[#ffffffd0] z-10 absolute w-100%"
                   : ""
               } relative  px-4 py-[13px] lg:py-[23px] lg:px-0  `}
@@ -218,16 +205,16 @@ export default function Login() {
                 <img
                   src={wc}
                   className={`${
-                    password?.trim()?.length === 0 &&
+                    password?.trim()?.length === 0 ||
                     email?.trim()?.length === 0
-                      ? "hi"
+                      ? ""
                       : "hidden"
                   } lg:h-10`}
                 />
                 <img
                   src={ba}
                   className={`${
-                    password?.trim()?.length === 0 &&
+                    password?.trim()?.length === 0 ||
                     email?.trim()?.length === 0
                       ? "hidden"
                       : "block"

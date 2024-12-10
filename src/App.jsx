@@ -6,6 +6,8 @@ import Login from "./Pages/Login.jsx";
 import Timepicker from "./Pages/Timepicker.jsx";
 import Viewer from "./Pages/viewer.jsx"
 import Alldata from "./Pages/Alldata.jsx";
+import Admin from "./Pages/Admin.jsx"
+import Spin from "./Pages/Spin.jsx"
 
 
 export const Context = createContext();
@@ -37,6 +39,8 @@ useEffect(() => {
           <Route exact path="/Time" element={<Timepicker />} />
           <Route exact path="/view" element={<Viewer />} />
           <Route exact path="/data" element={<Alldata />} />
+          <Route exact path="/Admin" element={<Admin />} />
+          <Route exact path="/s" element={<Spin />} />
           
           
         </Routes>
