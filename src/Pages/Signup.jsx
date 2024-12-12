@@ -44,25 +44,23 @@ export default function Signup() {
 
   const onSubmit = (data) => {
     setLoading(true); // Show spinner at the start
-    console.log(data);
-  
+
     if (data.password === data.password2) {
       // Passwords match, proceed with API call
       axios
         .post("http://localhost:3002/auth/signup", data)
         .then((result) => {
           if (result.status === 201) {
-            console.log("User created successfully");
             toast(
               <div className="h-[84px] w-[357px] mx-auto text-[#00A86B] text-center bg-[#DDDDDD] border-2 border-dashed border-[#00A86B] flex flex-col rounded-[32px] justify-center items-center">
                 User created successfully. Redirecting to login...
               </div>,
               {
                 position: "top-center",
-                duration: 3000,
+                duration: 1000,
               }
             );
-            setTimeout(() => navigate("/Login"), 3000); // Delay navigation for better UX
+            setTimeout(() => navigate("/Login"), 1000); // Delay navigation for better UX
           }
         })
         .catch((err) => {
@@ -73,7 +71,7 @@ export default function Signup() {
               </div>,
               {
                 position: "top-center",
-                duration: 5000,
+                duration: 3000,
               }
             );
           } else {
@@ -84,7 +82,7 @@ export default function Signup() {
               </div>,
               {
                 position: "top-center",
-                duration: 5000,
+                duration: 3000,
               }
             );
           }
@@ -100,7 +98,7 @@ export default function Signup() {
         </div>,
         {
           position: "top-center",
-          duration: 5000,
+          duration: 3000,
         }
       );
     }
@@ -210,7 +208,7 @@ export default function Signup() {
           {/* {errors.password && toast.error('Event has not been created')} */}
           {/* <input className="mt-4 h-12 bg"   disabled={password?.trim()?.length === 0 && email?.trim()?.length === 0}/> */}
           
-          <button type="submit" className="bg-[#E2063A] mt-4 text-white  rounded-full relative overflow-hidden group lg:h-[72px] lg:w-full  w-[100%]" disabled={/* password?.trim()?.length === 0 || email?.trim()?.length === 0 || password2?.trim()?.length === 0 || fullname?.trim()?.length === 0 || */ isSubmitting} >
+          <button type="submit" className="bg-[#E2063A] mt-4 text-white  rounded-full relative overflow-hidden group lg:h-[72px] lg:w-full  w-[100%]" disabled={password?.trim()?.length === 0 || email?.trim()?.length === 0 || password2?.trim()?.length === 0 || fullname?.trim()?.length === 0} >
             <div className={`${password?.trim()?.length === 0 || password2?.trim()?.length === 0 || email?.trim()?.length === 0 || fullname?.trim()?.length === 0 ? "inset-0 bg-[#ffffffd0] z-10 absolute w-100%" : ""} relative  px-4 py-[13px] lg:py-[23px] lg:px-0  `}>
               <span className="relative z-10 "><p className="font-nexa-bold text-[14px] leading-[22px] text-left lg:text-[16px] lg:leading-[26px] lg:pl-[40px]">Create Account</p></span>
               <div className="absolute right-[10px] top-[50%] translate-y-[-50%] lg:right-[25px]">
@@ -222,6 +220,7 @@ export default function Signup() {
           
         </form>
       </div>
+      <p className="mt-10">Already have an account ? <button className="underline text-blue-500" onClick={()=>{navigate("/login")}}>Login</button></p>
     </div>
   )
 }

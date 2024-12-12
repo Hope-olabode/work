@@ -13,7 +13,7 @@ import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
 
 
-import { Context } from "../App";
+
 
 const schema = z.object({
   email: z.string() /* .email("Incorrect email") */,
@@ -26,7 +26,7 @@ export default function Login() {
   const [isFocused, setIsFocused] = useState(false);
   const [isFocused2, setIsFocused2] = useState(false);
   const [hidden, setHidden] = useState(true);
-  const [isLogin, setIsLogin] = useContext(Context);
+
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -44,20 +44,37 @@ export default function Login() {
     axios
       .post("http://localhost:3002/auth/login", data)
       .then((result) => {
-        if (result.data === "Success") {
+        if (result.data.message === "Success") {
+          if (result.data.isAdmin) {
+            localStorage.setItem("isAdmin", true);
           toast(
             <div className="h-[84px] w-[357px] mx-auto text-[#00A86B] text-center bg-[#DDDDDD] border-2 border-dashed border-[#00A86B] flex flex-col rounded-[32px] justify-center items-center">
               Login successfully. Redirecting...
             </div>,
             {
               position: "top-center",
-              duration: 3000,
+              duration: 1000,
             }
           );
-          setTimeout(() => navigate("/view"), 3000);
-          setIsLogin(true);
-          localStorage.setItem("isLogin", true);
-          localStorage.setItem("email", data.email);
+          setTimeout(() => navigate("/data"), 1000);
+            
+          } else {
+            localStorage.setItem("isUser", true);
+            localStorage.setItem("email", data.email);
+            toast(
+              <div className="h-[84px] w-[357px] mx-auto text-[#00A86B] text-center bg-[#DDDDDD] border-2 border-dashed border-[#00A86B] flex flex-col rounded-[32px] justify-center items-center">
+                Login successfully. Redirecting...
+              </div>,
+              {
+                position: "top-center",
+                duration: 3000,
+              }
+            );
+            setTimeout(() => navigate("/view"), 3000);
+          }
+          
+          
+          
         } else {
           alert("login failed: User Does not exist");
   
@@ -65,20 +82,21 @@ export default function Login() {
       })
       .catch((err) => {
         // Extract error details, if available
+        console.log(err);
         const errorMessage = err.response
           ? err.response.data
           : err.message;
         
-  
+  console.log(err.message)
         // Show the error in an alert
-        toast(<div className="h-[84px] w-[357px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A]  flex flex-col rounded-[32px] justify-center items-center]">{errorMessage}</div>, {
+        /* toast(<div className="h-[84px] w-[357px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A]  flex flex-col rounded-[32px] justify-center items-center]">{errorMessage}</div>, {
           position: 'top-center',
           classNames: {
             cancelButton: 'bg-orange-400'
           },
           duration: 5000,
         })
-       
+        */
       })
       .finally(() => {
         setLoading(false); // Hide spinner
@@ -247,6 +265,7 @@ export default function Login() {
           </button>
         </form>
       </div>
+      <p className="mt-10">Don't have an account ? <button className="underline text-blue-500" onClick={()=>{navigate("/login")}}>Sign up</button></p>
     </div>
   );
 }

@@ -26,23 +26,15 @@ export default function Alldata() {
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
-        let result = await response.json();
-  
-        // Sort the data alphabetically by 'name' (or any desired field)
-        result = result.sort((a, b) => {
-          const nameA = a.name?.toLowerCase() || ""; // Handle case where 'name' might be undefined
-          const nameB = b.name?.toLowerCase() || "";
-          return nameA.localeCompare(nameB);
-        });
-  
-        setData(result); // Save the sorted data
+        const result = await response.json();
+        setData(result); // Save the fetched data
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
         setLoading(false); // End loading state
       }
     };
-  
+
     fetchData();
   }, []);
 
@@ -180,8 +172,16 @@ export default function Alldata() {
   };
 
   
+/* 
+  useEffect(() => {
+    if (isAdmin) {
+    } else {
+      navigate("/login");
+    
+    }
+  }, [isAdmin]); */
 
-  const excludedFields = [
+  const includedFields = [
     "daily_reflection",
     "thanksgiving",
     "repentance_or_struggles",
@@ -192,7 +192,7 @@ export default function Alldata() {
   
   return (
     <div>
-      <h1 className="text-lg font-semibold text-center">All data for Africa</h1>
+      <h1 className="text-lg font-semibold text-center">All Reflection data for Africa</h1>
       <div className="space-y-6 flex flex-col mt-10 w-[150%]">
         {Object.entries(africanCountriesByRegion).map(([region, countries], index) => (
           <div key={index}>
@@ -205,7 +205,7 @@ export default function Alldata() {
                     setFilterCountry(country);
                     setShowData(true);
                   }}
-                  className={`px-4 whitespace-nowrap py-2 rounded-full ${
+                  className={`px-4   whitespace-nowrap py-2 rounded-full ${
                     filterCountry === country
                       ? "bg-[#E2063A] text-white"
                       : "border-gray-200 bg-white border-2 hover:border-black"
@@ -218,7 +218,6 @@ export default function Alldata() {
           </div>
         ))}
       </div>
-  
       <div>
         {loading ? (
           <div className="fixed inset-0 bg-white bg-opacity-70 flex justify-center items-center z-50">
@@ -230,53 +229,29 @@ export default function Alldata() {
           <table className="mt-10 w-full border-collapse border border-gray-300">
             <thead>
               <tr className="bg-[#E2063A] text-white">
-                {Object.keys(filteredData[0])
-                  .filter((key) => !excludedFields.includes(key)) // Exclude unwanted fields
-                  .map((key) => (
-                    <th
-                      key={key}
-                      className="border whitespace-nowrap text-center border-gray-300 px-4 py-2"
-                    >
-                      {key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, " ")}
-                    </th>
-                  ))}
+                {includedFields.map((key) => (
+                  <th
+                    key={key}
+                    className="border whitespace-nowrap text-center border-gray-300 px-4 py-2"
+                  >
+                    {key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, " ")}
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody>
               {filteredData.map((item, index) => (
                 <tr key={index} className="even:bg-gray-50 odd:bg-gray-50">
-                  {Object.entries(item)
-                    .filter(([key]) => !excludedFields.includes(key)) // Exclude unwanted fields
-                    .map(([key, value], i) => (
-                      <td
-                        key={i}
-                        className="border whitespace-nowrap text-center border-gray-300 px-4 py-2"
-                      >
-                        {value}
-                      </td>
-                    ))}
-                </tr>
-              ))}
-              <tr className="bg-[#E2063A] text-white font-bold">
-                {Object.keys(filteredData[0])
-                  .filter((key) => !excludedFields.includes(key)) // Exclude unwanted fields
-                  .map((key) => (
+                  {includedFields.map((key, i) => (
                     <td
-                      key={key}
-                      className="border text-center border-gray-300 px-4 py-2"
+                      key={i}
+                      className="border whitespace-nowrap text-center border-gray-300 px-4 py-2"
                     >
-                      {key === "evangelism_hours"
-                        ? totalEvangelismHours
-                        : key === "bible_reading_and_meditation"
-                        ? totalBibleReadingAndMeditation
-                        : key === "prayer"
-                        ? totalPrayer
-                        : key === "exercise"
-                        ? totalExercise
-                        : totals[key] || ""}
+                      {item[key] || ""}
                     </td>
                   ))}
-              </tr>
+                </tr>
+              ))}
             </tbody>
           </table>
         ) : showData ? (
@@ -285,9 +260,9 @@ export default function Alldata() {
           <p className="mt-10">Select a country to view data.</p>
         )}
       </div>
-      <button className="px-4 hover:border-black whitespace-nowrap py-2 rounded-full bg-[#E2063A] text-white mt-10"
+      <button className="px-4 whitespace-nowrap py-2 rounded-full bg-[#E2063A] text-white mt-10"
       
-      onClick={()=> {navigate("/Reflect")}}>Reflection page</button>
+      onClick={()=> {navigate("/data")}}>Data page</button>
     </div>
   );
 }  

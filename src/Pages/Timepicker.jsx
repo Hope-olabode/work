@@ -1,53 +1,58 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
-function CustomDurationInput() {
-  const { 
-    register, 
-    handleSubmit, 
-    setValue, 
-    formState: { errors }, 
-    setError, 
-    clearErrors 
+function MultiInputForm() {
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+    setError,
+    clearErrors,
   } = useForm();
-  const [duration, setDuration] = useState("");
 
-  const handleInputChange = (e) => {
-    const value = e.target.value;
+  const [durations, setDurations] = useState(["", "", ""]);
 
-    // Match valid HH:mm format (partial or complete)
+  const handleDurationChange = (index, value) => {
     if (/^\d{0,2}(:\d{0,2})?$/.test(value)) {
       const [hours, minutes] = value.split(":");
-
-      // Restrict hours to 0–24 and minutes to 0–59
       if (
         (hours === undefined || (Number(hours) >= 0 && Number(hours) <= 24)) &&
         (minutes === undefined || (Number(minutes) >= 0 && Number(minutes) <= 59))
       ) {
-        setDuration(value); // Update input state
-        setValue("duration", value); // Update React Hook Form state
-        clearErrors("duration"); // Clear previous errors while typing
+        const updatedDurations = [...durations];
+        updatedDurations[index] = value;
+        setDurations(updatedDurations);
+        setValue(`duration_${index}`, value);
+        clearErrors(`duration_${index}`);
       }
     }
   };
 
   const onSubmit = (data) => {
-    const [hours, minutes] = data.duration.split(":").map(Number);
+    const durationValues = [
+      data.duration_0,
+      data.duration_1,
+      data.duration_2,
+    ];
 
-    // Validate that the time is not greater than 24:00
-    if (hours > 24 || (hours === 24 && minutes > 0)) {
-      setError("duration", {
-        type: "manual",
-        message: "Time cannot exceed 24:00",
-      });
-      return;
-    }
+    // Validate each duration
+    durationValues.forEach((duration, index) => {
+      const [hours, minutes] = duration?.split(":").map(Number) || [0, 0];
+      if (hours > 24 || (hours === 24 && minutes > 0)) {
+        setError(`duration_${index}`, {
+          type: "manual",
+          message: "Time cannot exceed 24:00",
+        });
+        throw new Error("Validation failed");
+      }
+    });
 
-    const totalMinutes = (hours || 0) * 60 + (minutes || 0);
-    console.log(`Name: ${data.name}`);
-    console.log(`Total time in minutes: ${totalMinutes}`);
-    alert(`Name: ${data.name}\nTotal time in minutes: ${totalMinutes}`);
-    console.log(data)
+    console.log("Name:", data.name);
+    console.log("Durations:", durationValues);
+    alert(
+      `Name: ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone}\nDurations: ${durationValues.join(", ")}`
+    );
   };
 
   return (
@@ -69,21 +74,66 @@ function CustomDurationInput() {
         )}
       </div>
 
-      {/* Duration Input */}
+      {/* Duration 1 */}
       <div>
-        <label htmlFor="duration" className="block text-sm font-medium text-gray-700">
-          Enter Duration (HH:MM)
+        <label
+          htmlFor="duration_0"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Enter Duration 1 (HH:MM)
         </label>
         <input
           type="text"
-          id="duration"
-          value={duration}
-          onChange={handleInputChange}
+          id="duration_0"
+          value={durations[0]}
+          onChange={(e) => handleDurationChange(0, e.target.value)}
           placeholder="HH:MM"
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         />
-        {errors.duration && (
-          <p className="text-sm text-red-600">{errors.duration.message}</p>
+        {errors.duration_0 && (
+          <p className="text-sm text-red-600">{errors.duration_0.message}</p>
+        )}
+      </div>
+
+      {/* Duration 2 */}
+      <div>
+        <label
+          htmlFor="duration_1"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Enter Duration 2 (HH:MM)
+        </label>
+        <input
+          type="text"
+          id="duration_1"
+          value={durations[1]}
+          onChange={(e) => handleDurationChange(1, e.target.value)}
+          placeholder="HH:MM"
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        />
+        {errors.duration_1 && (
+          <p className="text-sm text-red-600">{errors.duration_1.message}</p>
+        )}
+      </div>
+
+      {/* Duration 3 */}
+      <div>
+        <label
+          htmlFor="duration_2"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Enter Duration 3 (HH:MM)
+        </label>
+        <input
+          type="text"
+          id="duration_2"
+          value={durations[2]}
+          onChange={(e) => handleDurationChange(2, e.target.value)}
+          placeholder="HH:MM"
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        />
+        {errors.duration_2 && (
+          <p className="text-sm text-red-600">{errors.duration_2.message}</p>
         )}
       </div>
 
@@ -98,4 +148,4 @@ function CustomDurationInput() {
   );
 }
 
-export default CustomDurationInput;
+export default MultiInputForm;

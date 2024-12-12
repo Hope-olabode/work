@@ -11,10 +11,9 @@ import ba from "../assets/Images/barrow.svg";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
-import { Context } from "../App";
 
 const schema = z.object({
-  email: z.string() /* .email("Incorrect email") */,
+  email: z.string() /* .email("Incorrect email")*/,
   password:
     z.string() /* .min(8, "Password doesn’t meet requirement").regex(/[A-Z]/, "Password must contain at least one uppercase letter")
   .regex(/[@$!%*?&]/, "Password must contain at least one special character (e.g., @, $, !, %, *, ?, &)"), */,
@@ -24,7 +23,6 @@ export default function Amin() {
   const [isFocused, setIsFocused] = useState(false);
   const [isFocused2, setIsFocused2] = useState(false);
   const [hidden, setHidden] = useState(true);
-  const [isLogin, setIsLogin] = useContext(Context);
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -44,11 +42,28 @@ export default function Amin() {
       .post("http://localhost:3002/auth/ALogin", data)
       .then((result) => {
         if (result.data === "Success") {
-          setIsLogin(true);
-          localStorage.setItem("isLogin", true);
-          navigate("/data");
+          localStorage.setItem("isAdmin", true);
+          toast(
+            <div className="h-[84px] w-[357px] mx-auto text-[#00A86B] text-center bg-[#DDDDDD] border-2 border-dashed border-[#00A86B] flex flex-col rounded-[32px] justify-center items-center">
+              Login successfully. Redirecting...
+            </div>,
+            {
+              position: "top-center",
+              duration: 3000,
+            }
+          );
+          setTimeout(() => navigate("/data"), 3000);
         } else {
-          alert("Login failed: User does not exist");
+          toast(
+            <div className="h-[84px] w-[357px] mx-auto text-[#00A86B] text-center bg-[#DDDDDD] border-2 border-dashed border-[#00A86B] flex flex-col rounded-[32px] justify-center items-center">
+              Login failed: User does not exist
+            </div>,
+            {
+              position: "top-center",
+              duration: 3000,
+            }
+          );
+          alert("");
         }
       })
       .catch((err) => {
@@ -71,7 +86,7 @@ export default function Amin() {
         setLoading(false); // Hide spinner
       });
   };
-  
+
   const email = watch("email"); // watch input value
   const password = watch("password"); // watch input value
 
