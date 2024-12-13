@@ -122,15 +122,15 @@ export default function Home() {
           localStorage.removeItem("email");
           localStorage.removeItem("isLogin");
           toast(
-            <div className="h-[84px] w-[280px] mx-auto text-[#00A86B] text-center bg-[#DDDDDD] border-2 border-dashed border-[#00A86B] flex flex-col rounded-[32px] justify-center items-center">
+            <div className="h-[84px] px-4 w-[280px] mx-auto text-[#00A86B] text-center bg-[#DDDDDD] border-2 border-dashed border-[#00A86B] flex flex-col rounded-[32px] justify-center items-center">
               User created successfully. Redirecting to login...
             </div>,
             {
               position: "top-center",
-              duration: 1000,
+              duration: 2000,
             }
           );
-          setTimeout(() => navigate("/Login"), 1000);
+          setTimeout(() => navigate("/"), 2000);
         }
       })
       .catch((err) => {
@@ -139,7 +139,7 @@ export default function Home() {
 
         // Show the error in an alert
         toast(
-          <div className="h-[84px] w-[280px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A]  flex flex-col rounded-[32px] justify-center items-center]">
+          <div className="h-[84px] px-4 w-[280px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A]  flex flex-col rounded-[32px] justify-center items-center]">
             {errorMessage}
           </div>,
           {
@@ -147,7 +147,7 @@ export default function Home() {
             classNames: {
               cancelButton: "bg-orange-400",
             },
-            duration: 3000,
+            duration: 2000,
           }
         );
       })
@@ -161,7 +161,7 @@ export default function Home() {
   useEffect(() => {
     if (date) {
     } else {
-      navigate("/login");
+      navigate("/");
     }
   }, [date]);
 
@@ -169,7 +169,7 @@ export default function Home() {
     if (Object.keys(errors).length > 0) {
       Object.values(errors).forEach((error) => {
         toast(
-          <div className="h-[84px] w-[280px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A]  flex flex-col rounded-[32px] justify-center items-center]">
+          <div className="h-[84px] px-4 w-[280px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A]  flex flex-col rounded-[32px] justify-center items-center]">
             {error.message}
           </div>,
           {
@@ -177,7 +177,7 @@ export default function Home() {
             classNames: {
               cancelButton: "bg-orange-400",
             },
-            duration: 5000,
+            duration: 2000,
           }
         );
       });

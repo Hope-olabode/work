@@ -52,37 +52,37 @@ export default function Signup() {
         .then((result) => {
           if (result.status === 201) {
             toast(
-              <div className="h-[84px] w-[280px] mx-auto text-[#00A86B] text-center bg-[#DDDDDD] border-2 border-dashed border-[#00A86B] flex flex-col rounded-[32px] justify-center items-center">
+              <div className="h-[84px] px-4 w-[280px] mx-auto text-[#00A86B] text-center bg-[#DDDDDD] border-2 border-dashed border-[#00A86B] flex flex-col rounded-[32px] justify-center items-center">
                 User created successfully. Redirecting to login...
               </div>,
               {
                 position: "top-center",
-                duration: 1000,
+                duration: 2000,
               }
             );
-            setTimeout(() => navigate("/Login"), 1000); // Delay navigation for better UX
+            setTimeout(() => navigate("/"), 2000); // Delay navigation for better UX
           }
         })
         .catch((err) => {
           if (err.response && err.response.status === 400) {
             toast(
-              <div className="h-[84px] w-[280px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A] flex flex-col rounded-[32px] justify-center items-center">
+              <div className="h-[84px px-4] w-[280px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A] flex flex-col rounded-[32px] justify-center items-center">
                 Email already exists. Please use a different email.
               </div>,
               {
                 position: "top-center",
-                duration: 3000,
+                duration: 2000,
               }
             );
           } else {
             console.error("Unexpected error:", err);
             toast(
-              <div className="h-[84px] w-[280px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A] flex flex-col rounded-[32px] justify-center items-center">
+              <div className="h-[84px] px-4 w-[280px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A] flex flex-col rounded-[32px] justify-center items-center">
                 Something went wrong. Please try again later.
               </div>,
               {
                 position: "top-center",
-                duration: 3000,
+                duration: 2000,
               }
             );
           }
@@ -98,7 +98,7 @@ export default function Signup() {
         </div>,
         {
           position: "top-center",
-          duration: 3000,
+          duration: 2000,
         }
       );
     }
@@ -131,12 +131,12 @@ export default function Signup() {
   useEffect(()=> {
     if (Object.keys(errors).length > 0) {
       Object.values(errors).forEach((error)=> {
-        toast(<div className="h-[84px] w-[280px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A]  flex flex-col rounded-[32px] justify-center items-center]">{error.message}</div>, {
+        toast(<div className="h-[84px] px-4 w-[280px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A]  flex flex-col rounded-[32px] justify-center items-center]">{error.message}</div>, {
           position: 'top-center',
           classNames: {
             cancelButton: 'bg-orange-400'
           },
-          duration: 5000,
+          duration: 2000,
         })
       })
     }
@@ -220,7 +220,7 @@ export default function Signup() {
           
         </form>
       </div>
-      <p className="mt-10">Already have an account ? <button className="underline text-blue-500" onClick={()=>{navigate("/login")}}>Login</button></p>
+      <p className="mt-10">Already have an account ? <button className="underline text-blue-500" onClick={()=>{navigate("/")}}>Login</button></p>
     </div>
   )
 }

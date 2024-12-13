@@ -49,28 +49,28 @@ export default function Login() {
           if (result.data.isAdmin) {
             localStorage.setItem("isAdmin", true);
             toast(
-              <div className="h-[84px] w-[280px] mx-auto text-[#00A86B] text-center bg-[#DDDDDD] border-2 border-dashed border-[#00A86B] flex flex-col rounded-[32px] justify-center items-center">
+              <div className="h-[84px] px-4 w-[280px] mx-auto text-[#00A86B] text-center bg-[#DDDDDD] border-2 border-dashed border-[#00A86B] flex flex-col rounded-[32px] justify-center items-center">
                 Login successfully. Redirecting...
               </div>,
               {
                 position: "top-center",
-                duration: 1000,
+                duration: 2000,
               }
             );
-            setTimeout(() => navigate("/data"), 1000);
+            setTimeout(() => navigate("/data"), 2000);
           } else {
             localStorage.setItem("isUser", true);
             localStorage.setItem("email", data.email);
             toast(
-              <div className="h-[84px] w-[280px] mx-auto text-[#00A86B] text-center bg-[#DDDDDD] border-2 border-dashed border-[#00A86B] flex flex-col rounded-[32px] justify-center items-center">
+              <div className="h-[84px] px-4 w-[280px] mx-auto text-[#00A86B] text-center bg-[#DDDDDD] border-2 border-dashed border-[#00A86B] flex flex-col rounded-[32px] justify-center items-center">
                 Login successfully. Redirecting...
               </div>,
               {
                 position: "top-center",
-                duration: 1000,
+                duration: 2000,
               }
             );
-            setTimeout(() => navigate("/view"), 1000);
+            setTimeout(() => navigate("/view"), 2000);
           }
         } else {
           alert("login failed: User Does not exist");
@@ -80,10 +80,10 @@ export default function Login() {
         // Extract and display error message
         const errorMessage = err.response?.data?.error || "An unexpected error occurred";
         toast(
-          <div className="h-[84px] w-[280px]] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A]  flex flex-col rounded-[32px] justify-center items-center]">
+          <div className="h-[84px] px-4 w-[280px]] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A]  flex flex-col rounded-[32px] justify-center items-center]">
             {errorMessage}
           </div>,
-          { position: "top-center", duration: 3000 }
+          { position: "top-center", duration: 2000 }
         );
       })
       .finally(() => {
@@ -105,7 +105,7 @@ export default function Login() {
     if (Object.keys(errors).length > 0) {
       Object.values(errors).forEach((error) => {
         toast(
-          <div className="h-[84px] w-[280px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A]  flex flex-col rounded-[32px] justify-center items-center]">
+          <div className="h-[84px] px-4 w-[280px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A]  flex flex-col rounded-[32px] justify-center items-center]">
             {error.message}
           </div>,
           {
@@ -113,7 +113,7 @@ export default function Login() {
             classNames: {
               cancelButton: "bg-orange-400",
             },
-            duration: 5000,
+            duration: 2000,
             style: {
               display: "flex",
               justifyContent: "center",

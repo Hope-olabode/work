@@ -15,7 +15,7 @@ export default function Alldata() {
 
   } else {
     console.log('yes')
-    return <Navigate to="/Login" />
+    return <Navigate to="/" />
   }
 
   useEffect(() => {

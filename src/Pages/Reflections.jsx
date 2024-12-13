@@ -15,7 +15,7 @@ export default function Alldata() {
 
   } else {
     console.log('yes')
-    return <Navigate to="/Login" />
+    return <Navigate to="/" />
   }
 
   useEffect(() => {
@@ -176,7 +176,7 @@ export default function Alldata() {
   useEffect(() => {
     if (isAdmin) {
     } else {
-      navigate("/login");
+      navigate("/");
     
     }
   }, [isAdmin]); */

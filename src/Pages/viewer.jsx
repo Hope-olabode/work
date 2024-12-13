@@ -54,15 +54,15 @@ function CustomDateForm() {
       .then((result) => {
         if (result.data==="b") {
           console.log("user created successfully");
-          navigate("/");
+          navigate("/form");
           setDate(realDate);
         } else {
-          toast(<div className="h-[84px] w-[280px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A]  flex flex-col rounded-[32px] justify-center items-center]">Data for this day already exist, pick another day</div>, {
+          toast(<div className="h-[84px] px-4 w-[280px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A]  flex flex-col rounded-[32px] justify-center items-center]">Data for this day already exist, pick another day</div>, {
             position: 'top-center',
             classNames: {
               cancelButton: 'bg-orange-400'
             },
-            duration: 5000,
+            duration: 2000,
           })
         }
       })

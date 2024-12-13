@@ -13,9 +13,9 @@ import Reflection from "./Pages/Reflections.jsx";
 export default function App() {
   return (
     <Routes>
-      <Route exact path="/" element={<HomePage />} />
+      <Route exact path="/form" element={<HomePage />} />
       <Route exact path="/Signup" element={<Signup />} />
-      <Route exact path="/Login" element={<Login />} />
+      <Route exact path="/" element={<Login />} />
       <Route exact path="/Time" element={<Timepicker />} />
       <Route exact path="/view" element={<Viewer />} />
       <Route exact path="/data" element={<Alldata />} />
