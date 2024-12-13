@@ -12,11 +12,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
 
-
-
-
 const schema = z.object({
-  email: z.string() /* .email("Incorrect email") */,
+  email: z.string()/* .email("Incorrect email") */,
   password:
     z.string() /* .min(8, "Password doesn’t meet requirement").regex(/[A-Z]/, "Password must contain at least one uppercase letter")
   .regex(/[@$!%*?&]/, "Password must contain at least one special character (e.g., @, $, !, %, *, ?, &)"), */,
@@ -28,6 +25,10 @@ export default function Login() {
   const [hidden, setHidden] = useState(true);
 
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem("isAdmin", false);
+  }, []);
 
   const navigate = useNavigate();
   const {
@@ -47,56 +48,43 @@ export default function Login() {
         if (result.data.message === "Success") {
           if (result.data.isAdmin) {
             localStorage.setItem("isAdmin", true);
-          toast(
-            <div className="h-[84px] w-[357px] mx-auto text-[#00A86B] text-center bg-[#DDDDDD] border-2 border-dashed border-[#00A86B] flex flex-col rounded-[32px] justify-center items-center">
-              Login successfully. Redirecting...
-            </div>,
-            {
-              position: "top-center",
-              duration: 1000,
-            }
-          );
-          setTimeout(() => navigate("/data"), 1000);
-            
-          } else {
-            localStorage.setItem("isUser", true);
-            localStorage.setItem("email", data.email);
             toast(
-              <div className="h-[84px] w-[357px] mx-auto text-[#00A86B] text-center bg-[#DDDDDD] border-2 border-dashed border-[#00A86B] flex flex-col rounded-[32px] justify-center items-center">
+              <div className="h-[84px] w-[280px] mx-auto text-[#00A86B] text-center bg-[#DDDDDD] border-2 border-dashed border-[#00A86B] flex flex-col rounded-[32px] justify-center items-center">
                 Login successfully. Redirecting...
               </div>,
               {
                 position: "top-center",
-                duration: 3000,
+                duration: 1000,
               }
             );
-            setTimeout(() => navigate("/view"), 3000);
+            setTimeout(() => navigate("/data"), 1000);
+          } else {
+            localStorage.setItem("isUser", true);
+            localStorage.setItem("email", data.email);
+            toast(
+              <div className="h-[84px] w-[280px] mx-auto text-[#00A86B] text-center bg-[#DDDDDD] border-2 border-dashed border-[#00A86B] flex flex-col rounded-[32px] justify-center items-center">
+                Login successfully. Redirecting...
+              </div>,
+              {
+                position: "top-center",
+                duration: 100000,
+              }
+            );
+            /* setTimeout(() => navigate("/view"), 1000); */
           }
-          
-          
-          
         } else {
           alert("login failed: User Does not exist");
-  
         }
       })
       .catch((err) => {
-        // Extract error details, if available
-        console.log(err);
-        const errorMessage = err.response
-          ? err.response.data
-          : err.message;
-        
-  console.log(err.message)
-        // Show the error in an alert
-        /* toast(<div className="h-[84px] w-[357px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A]  flex flex-col rounded-[32px] justify-center items-center]">{errorMessage}</div>, {
-          position: 'top-center',
-          classNames: {
-            cancelButton: 'bg-orange-400'
-          },
-          duration: 5000,
-        })
-        */
+        // Extract and display error message
+        const errorMessage = err.response?.data?.error || "An unexpected error occurred";
+        toast(
+          <div className="h-[84px] w-[280px]] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A]  flex flex-col rounded-[32px] justify-center items-center]">
+            {errorMessage}
+          </div>,
+          { position: "top-center", duration: 3000 }
+        );
       })
       .finally(() => {
         setLoading(false); // Hide spinner
@@ -117,15 +105,21 @@ export default function Login() {
     if (Object.keys(errors).length > 0) {
       Object.values(errors).forEach((error) => {
         toast(
-          <div className="h-[84px] w-[357px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A]  flex flex-col rounded-[32px] justify-center items-center]">
+          <div className="h-[84px] w-[280px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A]  flex flex-col rounded-[32px] justify-center items-center]">
             {error.message}
           </div>,
           {
-            position: "top-center",
+            
             classNames: {
               cancelButton: "bg-orange-400",
             },
             duration: 5000,
+            style: {
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              margin: "0 auto", // Center horizontally
+            },
           }
         );
       });
@@ -133,7 +127,6 @@ export default function Login() {
   }, [errors]);
 
   return (
-    
     <div className="mt-[96px] py-32 px-4 flex flex-col content-center items-center">
       {loading && (
         <div className="fixed inset-0 bg-white bg-opacity-70 flex justify-center items-center z-50">
@@ -143,7 +136,7 @@ export default function Login() {
         </div>
       )}
       <div className="max-w-[482px]">
-        <p className="text-center mb-2 text-[#9A9A9A] font-poopins font-medium text-[16px] leading-[26px] lg:font-nexa-bold lg:text-[36px] lg:leading-[48px] lg:mb-4">
+        <p className="text-center mb-2 text-[#9A9A9A] bg-[#ffffff02] font-poopins font-medium text-[16px] leading-[26px] lg:font-nexa-bold lg:text-[36px] lg:leading-[48px] lg:mb-4">
           Login
         </p>
         <h3 className="text-center font-nexa-bold text-[36px] mb-2 leading-[48px] whitespace-nowrap lg:text-[56px] lg:leading-[78px] lg:mb-6">
@@ -153,8 +146,8 @@ export default function Login() {
           Glad to have you working with us
         </p>
         <Toaster
-          expand
-          visibleToasts={2}
+          
+          visibleToasts={1}
           toastOptions={{
             unstyled: true,
             className: "class",
@@ -217,12 +210,12 @@ export default function Login() {
             type="submit"
             className="bg-[#E2063A] mt-4 text-white  rounded-full relative overflow-hidden group lg:h-[72px] lg:w-full  w-[100%]"
             disabled={
-              password?.trim()?.length === 0 && email?.trim()?.length === 0
+              password?.trim()?.length === 0 || email?.trim()?.length === 0
             }
           >
             <div
               className={`${
-                password?.trim()?.length === 0 && email?.trim()?.length === 0
+                password?.trim()?.length === 0 || email?.trim()?.length === 0
                   ? "inset-0 bg-[#ffffffd0] z-10 absolute w-100%"
                   : ""
               } relative  px-4 py-[13px] lg:py-[23px] lg:px-0  `}
@@ -236,7 +229,7 @@ export default function Login() {
                 <img
                   src={wc}
                   className={`${
-                    password?.trim()?.length === 0 &&
+                    password?.trim()?.length === 0 ||
                     email?.trim()?.length === 0
                       ? "hi"
                       : "hidden"
@@ -245,27 +238,30 @@ export default function Login() {
                 <img
                   src={ba}
                   className={`${
-                    password?.trim()?.length === 0 &&
+                    password?.trim()?.length === 0 ||
                     email?.trim()?.length === 0
                       ? "hidden"
                       : "block"
                   } lg:h-10`}
                 />
 
-                <div
-                  className={`${
-                    password?.trim()?.length === 0 &&
-                    email?.trim()?.length === 0
-                      ? ""
-                      : " "
-                  }`}
-                ></div>
+                
               </div>
             </div>
           </button>
         </form>
       </div>
-      <p className="mt-10">Don't have an account ? <button className="underline text-blue-500" onClick={()=>{navigate("/login")}}>Sign up</button></p>
+      <p className="mt-10">
+        Don't have an account ?{" "}
+        <button
+          className="underline text-blue-500"
+          onClick={() => {
+            navigate("/Signup");
+          }}
+        >
+          Sign up
+        </button>
+      </p>
     </div>
   );
 }

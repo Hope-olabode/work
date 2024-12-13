@@ -52,7 +52,7 @@ export default function Signup() {
         .then((result) => {
           if (result.status === 201) {
             toast(
-              <div className="h-[84px] w-[357px] mx-auto text-[#00A86B] text-center bg-[#DDDDDD] border-2 border-dashed border-[#00A86B] flex flex-col rounded-[32px] justify-center items-center">
+              <div className="h-[84px] w-[280px] mx-auto text-[#00A86B] text-center bg-[#DDDDDD] border-2 border-dashed border-[#00A86B] flex flex-col rounded-[32px] justify-center items-center">
                 User created successfully. Redirecting to login...
               </div>,
               {
@@ -66,7 +66,7 @@ export default function Signup() {
         .catch((err) => {
           if (err.response && err.response.status === 400) {
             toast(
-              <div className="h-[84px] w-[357px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A] flex flex-col rounded-[32px] justify-center items-center">
+              <div className="h-[84px] w-[280px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A] flex flex-col rounded-[32px] justify-center items-center">
                 Email already exists. Please use a different email.
               </div>,
               {
@@ -77,7 +77,7 @@ export default function Signup() {
           } else {
             console.error("Unexpected error:", err);
             toast(
-              <div className="h-[84px] w-[357px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A] flex flex-col rounded-[32px] justify-center items-center">
+              <div className="h-[84px] w-[280px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A] flex flex-col rounded-[32px] justify-center items-center">
                 Something went wrong. Please try again later.
               </div>,
               {
@@ -93,7 +93,7 @@ export default function Signup() {
     } else {
       // Passwords do not match
       toast(
-        <div className="h-[84px] w-[357px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A] flex flex-col rounded-[32px] justify-center items-center">
+        <div className="h-[84px] w-[280px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A] flex flex-col rounded-[32px] justify-center items-center">
           Passwords do not match. Please try again.
         </div>,
         {
@@ -131,7 +131,7 @@ export default function Signup() {
   useEffect(()=> {
     if (Object.keys(errors).length > 0) {
       Object.values(errors).forEach((error)=> {
-        toast(<div className="h-[84px] w-[357px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A]  flex flex-col rounded-[32px] justify-center items-center]">{error.message}</div>, {
+        toast(<div className="h-[84px] w-[280px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A]  flex flex-col rounded-[32px] justify-center items-center]">{error.message}</div>, {
           position: 'top-center',
           classNames: {
             cancelButton: 'bg-orange-400'

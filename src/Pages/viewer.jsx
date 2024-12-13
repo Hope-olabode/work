@@ -57,7 +57,7 @@ function CustomDateForm() {
           navigate("/");
           setDate(realDate);
         } else {
-          toast(<div className="h-[84px] w-[357px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A]  flex flex-col rounded-[32px] justify-center items-center]">Data for this day already exist, pick another day</div>, {
+          toast(<div className="h-[84px] w-[280px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A]  flex flex-col rounded-[32px] justify-center items-center]">Data for this day already exist, pick another day</div>, {
             position: 'top-center',
             classNames: {
               cancelButton: 'bg-orange-400'
@@ -99,7 +99,7 @@ function CustomDateForm() {
           />
         </label>
         <button
-          className="bg-[#E2063A] mt-4 text-white  rounded-full relative overflow-hidden group lg:h-[72px] lg:w-full  w-[100%]"
+          className="bg-[#E2063A] mt-4 text-white h-[48px] rounded-full relative overflow-hidden group lg:h-[72px] lg:w-full  w-[100%]"
           type="submit"
         >
           Submit

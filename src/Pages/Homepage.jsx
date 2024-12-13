@@ -13,7 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 
 export default function Home() {
-  const [durations, setDurations] = useState(["00:00", "00:00", "00:00", "00:00"]);
+  const [durations, setDurations] = useState(["", "", "", ""]);
   const [selectedCountry, setSelectedCountry] = useState("");
   const [loading, setLoading] = useState(false);
   const mqd = false;
@@ -122,7 +122,7 @@ export default function Home() {
           localStorage.removeItem("email");
           localStorage.removeItem("isLogin");
           toast(
-            <div className="h-[84px] w-[357px] mx-auto text-[#00A86B] text-center bg-[#DDDDDD] border-2 border-dashed border-[#00A86B] flex flex-col rounded-[32px] justify-center items-center">
+            <div className="h-[84px] w-[280px] mx-auto text-[#00A86B] text-center bg-[#DDDDDD] border-2 border-dashed border-[#00A86B] flex flex-col rounded-[32px] justify-center items-center">
               User created successfully. Redirecting to login...
             </div>,
             {
@@ -139,7 +139,7 @@ export default function Home() {
 
         // Show the error in an alert
         toast(
-          <div className="h-[84px] w-[357px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A]  flex flex-col rounded-[32px] justify-center items-center]">
+          <div className="h-[84px] w-[280px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A]  flex flex-col rounded-[32px] justify-center items-center]">
             {errorMessage}
           </div>,
           {
@@ -165,11 +165,11 @@ export default function Home() {
     }
   }, [date]);
 
-  /* useEffect(() => {
+  useEffect(() => {
     if (Object.keys(errors).length > 0) {
       Object.values(errors).forEach((error) => {
         toast(
-          <div className="h-[84px] w-[357px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A]  flex flex-col rounded-[32px] justify-center items-center]">
+          <div className="h-[84px] w-[280px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A]  flex flex-col rounded-[32px] justify-center items-center]">
             {error.message}
           </div>,
           {
@@ -182,7 +182,7 @@ export default function Home() {
         );
       });
     }
-  }, [errors]); */
+  }, [errors]);
 
   const handleDurationChange = (index, value) => {
     if (/^\d{0,2}(:\d{0,2})?$/.test(value)) {
@@ -225,7 +225,7 @@ export default function Home() {
         <div className="">
           <Toaster
             expand
-            visibleToasts={2}
+            visibleToasts={1}
             toastOptions={{
               unstyled: true,
               className: "class",
@@ -243,7 +243,7 @@ export default function Home() {
                   spellCheck="false"
                   className="mt-2 w-full h-12 border-2 border-[#DDDDDD] rounded-[8px] focus:border-[#E2063A] focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px] lg:h-[72px] lg:text-[16px] lg:leading-[26px]"
                   {...register("name")}
-                  placeholder="Full Name"
+                  placeholder="Name"
                   type="string"
                 />
               </div>
@@ -253,7 +253,7 @@ export default function Home() {
                 <select
                   id="country"
                   className="mt-2 w-full h-12 border-2 border-[#DDDDDD] rounded-[8px] focus:border-[#E2063A] focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px] lg:h-[72px] lg:text-[16px] lg:leading-[26px]"
-                  {...register("country", { required: "Country is required" })} // Adding validation
+                  {...register("country")} // Adding validation
                 >
                   <option value="" >
                     Select a Country
@@ -305,7 +305,7 @@ export default function Home() {
                   spellCheck="false"
                   className="mt-2 w-full h-12 border-2 border-[#DDDDDD] rounded-[8px] focus:border-[#E2063A] focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px] lg:h-[72px] lg:text-[16px] lg:leading-[26px]"
                   {...register("people_reached")}
-                  placeholder="1,2,3...300"
+                  placeholder="Input Number"
                   type="number"
                 />
               </div>
@@ -316,7 +316,7 @@ export default function Home() {
                   spellCheck="false"
                   className="mt-2 w-full h-12 border-2 border-[#DDDDDD] rounded-[8px] focus:border-[#E2063A] focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px] lg:h-[72px] lg:text-[16px] lg:leading-[26px]"
                   {...register("contacts_received")}
-                  placeholder="1,2,3...300"
+                  placeholder="Input Number"
                   type="number"
                 />
               </div>
@@ -327,7 +327,7 @@ export default function Home() {
                   spellCheck="false"
                   className="mt-2 w-full h-12 border-2 border-[#DDDDDD] rounded-[8px] focus:border-[#E2063A] focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px] lg:h-[72px] lg:text-[16px] lg:leading-[26px]"
                   {...register("bible_study_sessions")}
-                  placeholder=""
+                 placeholder="Input Number"
                   type="number"
                 />
               </div>
@@ -338,7 +338,7 @@ export default function Home() {
                   spellCheck="false"
                   className="mt-2 w-full h-12 border-2 border-[#DDDDDD] rounded-[8px] focus:border-[#E2063A] focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px] lg:h-[72px] lg:text-[16px] lg:leading-[26px]"
                   {...register("bible_study_attendants")}
-                  placeholder=""
+                 placeholder="Input Number"
                   type="number"
                 />
               </div>
@@ -349,7 +349,7 @@ export default function Home() {
                   spellCheck="false"
                   className="mt-2 w-full h-12 border-2 border-[#DDDDDD] rounded-[8px] focus:border-[#E2063A] focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px] lg:h-[72px] lg:text-[16px] lg:leading-[26px]"
                   {...register("unique_bible_study_attendants")}
-                  placeholder=""
+                 placeholder="Input Number"
                   type="number"
                 />
               </div>
@@ -360,7 +360,7 @@ export default function Home() {
                   spellCheck="false"
                   className="mt-2 w-full h-12 border-2 border-[#DDDDDD] rounded-[8px] focus:border-[#E2063A] focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px] lg:h-[72px] lg:text-[16px] lg:leading-[26px]"
                   {...register("newcomers")}
-                  placeholder=""
+                 placeholder="Input Number"
                   type="number"
                 />
               </div>
@@ -405,7 +405,7 @@ export default function Home() {
                   spellCheck="false"
                   className="mt-2 w-full h-12 border-2 border-[#DDDDDD] rounded-[8px] focus:border-[#E2063A] focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px] lg:h-[72px] lg:text-[16px] lg:leading-[26px]"
                   {...register("morning_service_attendance")}
-                  placeholder=""
+                 placeholder="Input Number"
                   type="number"
                 />
               </div>
@@ -416,7 +416,7 @@ export default function Home() {
                   spellCheck="false"
                   className="mt-2 w-full h-12 border-2 border-[#DDDDDD] rounded-[8px] focus:border-[#E2063A] focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px] lg:h-[72px] lg:text-[16px] lg:leading-[26px]"
                   {...register("regular_service_attendance")}
-                  placeholder=""
+                 placeholder="Input Number"
                   type="string"
                 />
               </div>
@@ -427,7 +427,7 @@ export default function Home() {
                   spellCheck="false"
                   className="mt-2 w-full h-12 border-2 border-[#DDDDDD] rounded-[8px] focus:border-[#E2063A] focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px] lg:h-[72px] lg:text-[16px] lg:leading-[26px]"
                   {...register("sermons_or_bible_study_listened_to")}
-                  placeholder=""
+                 placeholder="Input Number"
                   type="number"
                 />
               </div>
@@ -438,7 +438,7 @@ export default function Home() {
                   spellCheck="false"
                   className="mt-2 w-full h-12 border-2 border-[#DDDDDD] rounded-[8px] focus:border-[#E2063A] focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px] lg:h-[72px] lg:text-[16px] lg:leading-[26px]"
                   {...register("articles_written")}
-                  placeholder=""
+                 placeholder="Input Number"
                   type="number"
                 />
               </div>
@@ -464,9 +464,9 @@ export default function Home() {
                 <p>Daily Reflection :</p>
                 <textarea
                   spellCheck="false"
-                  className="mt-2 w-full h-32 border-2 border-[#DDDDDD] rounded-[8px] focus:border-[#E2063A] focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px] lg:h-[72px] lg:text-[16px] lg:leading-[26px]"
+                  className="mt-2 w-full h-32 border-2 border-[#DDDDDD] rounded-[8px] focus:border-[#E2063A] focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px]  lg:text-[16px] lg:leading-[26px]"
                   {...register("daily_reflection")}
-                  placeholder=""
+                 placeholder=""
                   type="string"
                 />
               </div>
@@ -475,9 +475,9 @@ export default function Home() {
                 <p>Thanksgiving :</p>
                 <textarea
                   spellCheck="false"
-                  className="mt-2 h-32 w-full  border-2 border-[#DDDDDD] rounded-[8px] focus:border-[#E2063A] focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px] lg:h-[72px] lg:text-[16px] lg:leading-[26px]"
+                  className="mt-2 h-32 w-full  border-2 border-[#DDDDDD] rounded-[8px] focus:border-[#E2063A] focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px]  lg:text-[16px] lg:leading-[26px]"
                   {...register("thanksgiving")}
-                  placeholder=""
+                 placeholder=""
                   type="string"
                 />
               </div>
@@ -488,7 +488,7 @@ export default function Home() {
                   spellCheck="false"
                   className="mt-2 w-full h-32 border-2 border-[#DDDDDD] rounded-[8px] focus:border-[#E2063A] focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px]  lg:text-[16px] lg:leading-[26px]"
                   {...register("repentance_or_struggles")}
-                  placeholder=""
+                 placeholder=""
                   type="string"
                 />
               </div>
@@ -499,7 +499,7 @@ export default function Home() {
                   spellCheck="false"
                   className="mt-2 w-full h-32 border-2 border-[#DDDDDD] rounded-[8px] focus:border-[#E2063A] focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px]  lg:text-[16px] lg:leading-[26px]"
                   {...register("prayer_requests")}
-                  placeholder=""
+                 placeholder=""
                   type="string"
                 />
               </div>
@@ -510,7 +510,7 @@ export default function Home() {
                   spellCheck="false"
                   className="mt-2 w-full h-32 border-2 border-[#DDDDDD] rounded-[8px] focus:border-[#E2063A] focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px]  lg:text-[16px] lg:leading-[26px]"
                   {...register("overall_reflection_on_the_day")}
-                  placeholder=""
+                 placeholder=""
                   type="string"
                 />
               </div>
@@ -521,16 +521,16 @@ export default function Home() {
                   spellCheck="false"
                   className="mt-2 w-full h-32 border-2 border-[#DDDDDD] rounded-[8px] focus:border-[#E2063A] focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px]  lg:text-[16px] lg:leading-[26px]"
                   {...register("three_things_must_do_tomorrow")}
-                  placeholder=""
+                 placeholder=""
                   type="string"
                 />
               </div>
             </div>
-
+                <p className="mt-10">Button will be active when all input boxes are filled</p>
             <button
               type="submit"
               className="bg-[#E2063A] mt-4 text-white  rounded-full relative overflow-hidden group lg:h-[72px] lg:w-full  w-[100%]"
-              /* disabled={!areAllFieldsFilled()} */
+              disabled={!areAllFieldsFilled()}
             >
               <div
                 className={`${
