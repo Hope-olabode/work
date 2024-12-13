@@ -114,7 +114,7 @@ export default function Home() {
     };
     console.log(newData);
     axios
-      .post("http://localhost:3002/form/data", newData)
+      .post("https://server-zsg5.onrender.com/form/data", newData)
       .then((result) => {
         if (result.status == 201) {
           console.log("Form submitted successfully");

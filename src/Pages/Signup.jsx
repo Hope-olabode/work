@@ -48,7 +48,7 @@ export default function Signup() {
     if (data.password === data.password2) {
       // Passwords match, proceed with API call
       axios
-        .post("http://localhost:3002/auth/signup", data)
+        .post("https://server-zsg5.onrender.com/auth/signup", data)
         .then((result) => {
           if (result.status === 201) {
             toast(

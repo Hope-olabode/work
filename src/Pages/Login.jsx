@@ -42,7 +42,7 @@ export default function Login() {
   const onSubmit = (data) => {
     setLoading(true); // Show spinner
     axios
-      .post("http://localhost:3002/auth/login", data)
+      .post("https://server-zsg5.onrender.com/auth/login", data)
       .then((result) => {
         if (result.data.message === "Success") {
           if (result.data.isAdmin) {

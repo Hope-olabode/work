@@ -22,7 +22,7 @@ export default function Alldata() {
     setLoading(true);
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:3002/form/data"); // Replace with your API URL
+        const response = await fetch("https://server-zsg5.onrender.com/form/data"); // Replace with your API URL
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }

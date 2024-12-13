@@ -50,7 +50,7 @@ function CustomDateForm() {
     setError("");
 
     axios
-      .post("http://localhost:3002/form/check", data)
+      .post("https://server-zsg5.onrender.com/form/check", data)
       .then((result) => {
         if (result.data==="b") {
           console.log("user created successfully");

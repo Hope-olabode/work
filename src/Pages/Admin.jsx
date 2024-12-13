@@ -39,7 +39,7 @@ export default function Amin() {
   const onSubmit = (data) => {
     setLoading(true); // Show spinner
     axios
-      .post("http://localhost:3002/auth/ALogin", data)
+      .post("https://server-zsg5.onrender.com/auth/ALogin", data)
       .then((result) => {
         if (result.data === "Success") {
           localStorage.setItem("isAdmin", true);
