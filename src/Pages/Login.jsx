@@ -67,10 +67,10 @@ export default function Login() {
               </div>,
               {
                 position: "top-center",
-                duration: 100000,
+                duration: 1000,
               }
             );
-            /* setTimeout(() => navigate("/view"), 1000); */
+            setTimeout(() => navigate("/view"), 1000);
           }
         } else {
           alert("login failed: User Does not exist");
