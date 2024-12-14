@@ -7,22 +7,22 @@ export default function Alldata() {
   const [loading, setLoading] = useState(true);
   const [showData, setShowData] = useState(false);
 
-  const isAdmin = JSON.parse(localStorage.getItem("isAdmin"))
-  const navigate = useNavigate()
+  const isAdmin = JSON.parse(localStorage.getItem("isAdmin"));
+  const navigate = useNavigate();
 
-  if (isAdmin){
-    
-
+  if (isAdmin) {
   } else {
-    console.log('yes')
-    return <Navigate to="/" />
+    console.log("yes");
+    return <Navigate to="/" />;
   }
 
   useEffect(() => {
     setLoading(true);
     const fetchData = async () => {
       try {
-        const response = await fetch("https://server-zsg5.onrender.com/form/data"); // Replace with your API URL
+        const response = await fetch(
+          "https://server-zsg5.onrender.com/form/data"
+        ); // Replace with your API URL
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -171,8 +171,7 @@ export default function Alldata() {
     ],
   };
 
-  
-/* 
+  /* 
   useEffect(() => {
     if (isAdmin) {
     } else {
@@ -182,6 +181,7 @@ export default function Alldata() {
   }, [isAdmin]); */
 
   const includedFields = [
+    "name",
     "daily_reflection",
     "thanksgiving",
     "repentance_or_struggles",
@@ -189,34 +189,38 @@ export default function Alldata() {
     "overall_reflection_on_the_day",
     "three_things_must_do_tomorrow",
   ];
-  
+
   return (
-    <div>
-      <h1 className="text-lg font-semibold text-center">All Reflection data for Africa</h1>
-      <div className="space-y-6 flex flex-col mt-10 w-[150%]">
-        {Object.entries(africanCountriesByRegion).map(([region, countries], index) => (
-          <div key={index}>
-            <h3 className="text-lg font-semibold mb-2">{region}</h3>
-            <div className="flex space-x-2 flex-wrap">
-              {countries.map((country, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => {
-                    setFilterCountry(country);
-                    setShowData(true);
-                  }}
-                  className={`px-4   whitespace-nowrap py-2 rounded-full ${
-                    filterCountry === country
-                      ? "bg-[#E2063A] text-white"
-                      : "border-gray-200 bg-white border-2 hover:border-black"
-                  }`}
-                >
-                  {country}
-                </button>
-              ))}
+    <div className="overflow-scroll">
+      <h1 className="text-lg font-semibold text-center">
+        All Reflection data for Africa
+      </h1>
+      <div className="space-y-6 flex flex-col mt-10 w-full">
+        {Object.entries(africanCountriesByRegion).map(
+          ([region, countries], index) => (
+            <div key={index}>
+              <h3 className="text-lg font-semibold mb-2">{region}</h3>
+              <div className="flex space-x-2 \">
+                {countries.map((country, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => {
+                      setFilterCountry(country);
+                      setShowData(true);
+                    }}
+                    className={`px-4 whitespace-nowrap py-2 rounded-full ${
+                      filterCountry === country
+                        ? "bg-[#E2063A] text-white"
+                        : "border-gray-200 bg-white border-2 hover:border-black"
+                    }`}
+                  >
+                    {country}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
+          )
+        )}
       </div>
       <div>
         {loading ? (
@@ -226,15 +230,20 @@ export default function Alldata() {
             </div>
           </div>
         ) : showData && filteredData.length > 0 ? (
-          <table className="mt-10 w-full border-collapse border border-gray-300">
+          <table
+            className="mt-10 w-full border-collapse border border-gray-300 table-fixed"
+            style={{ tableLayout: "fixed" }}
+          >
             <thead>
               <tr className="bg-[#E2063A] text-white">
                 {includedFields.map((key) => (
                   <th
                     key={key}
                     className="border whitespace-nowrap text-center border-gray-300 px-4 py-2"
+                    style={{ width: "500px" }}
                   >
-                    {key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, " ")}
+                    {key.charAt(0).toUpperCase() +
+                      key.slice(1).replace(/_/g, " ")}
                   </th>
                 ))}
               </tr>
@@ -245,7 +254,8 @@ export default function Alldata() {
                   {includedFields.map((key, i) => (
                     <td
                       key={i}
-                      className="border whitespace-nowrap text-center border-gray-300 px-4 py-2"
+                      className="border text-center border-gray-300 px-4 py-4"
+                      style={{ width: "500px" }}
                     >
                       {item[key] || ""}
                     </td>
@@ -260,9 +270,14 @@ export default function Alldata() {
           <p className="mt-10">Select a country to view data.</p>
         )}
       </div>
-      <button className="px-4 whitespace-nowrap py-2 rounded-full bg-[#E2063A] text-white mt-10"
-      
-      onClick={()=> {navigate("/data")}}>Data page</button>
+      <button
+        className="px-4 whitespace-nowrap py-2 rounded-full bg-[#E2063A] text-white mt-10"
+        onClick={() => {
+          navigate("/data");
+        }}
+      >
+        Data page
+      </button>
     </div>
   );
-}  
+}

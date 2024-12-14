@@ -263,7 +263,7 @@ export default function Alldata() {
                   .map((key) => (
                     <td
                       key={key}
-                      className="border text-center border-gray-300 px-4 py-2"
+                      className="border whitespace-nowrap text-center border-gray-300 px-4 py-2"
                     >
                       {key === "evangelism_hours"
                         ? totalEvangelismHours

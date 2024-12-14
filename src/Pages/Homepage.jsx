@@ -123,7 +123,7 @@ export default function Home() {
           localStorage.removeItem("isLogin");
           toast(
             <div className="h-[84px] px-4 w-[280px] mx-auto text-[#00A86B] text-center bg-[#DDDDDD] border-2 border-dashed border-[#00A86B] flex flex-col rounded-[32px] justify-center items-center">
-              User created successfully. Redirecting to login...
+              Form submitted successfully. Redirecting to login...
             </div>,
             {
               position: "top-center",
@@ -530,7 +530,7 @@ export default function Home() {
             <button
               type="submit"
               className="bg-[#E2063A] mt-4 text-white  rounded-full relative overflow-hidden group lg:h-[72px] lg:w-full  w-[100%]"
-              disabled={!areAllFieldsFilled()}
+             /*  disabled={!areAllFieldsFilled()} */
             >
               <div
                 className={`${
