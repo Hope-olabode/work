@@ -13,7 +13,7 @@ import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
 
 const schema = z.object({
-  email: z.string()/* .email("Incorrect email") */,
+  email: z.string() /* .email("Incorrect email") */,
   password:
     z.string() /* .min(8, "Password doesn’t meet requirement").regex(/[A-Z]/, "Password must contain at least one uppercase letter")
   .regex(/[@$!%*?&]/, "Password must contain at least one special character (e.g., @, $, !, %, *, ?, &)"), */,
@@ -29,6 +29,12 @@ export default function Login() {
   useEffect(() => {
     localStorage.setItem("isAdmin", false);
   }, []);
+
+  localStorage.removeItem("date");
+  localStorage.removeItem("email");
+  localStorage.removeItem("isLogin");
+  localStorage.removeItem("isUser");
+  localStorage.removeItem("email");
 
   const navigate = useNavigate();
   const {
@@ -49,7 +55,7 @@ export default function Login() {
           if (result.data.isAdmin) {
             localStorage.setItem("isAdmin", true);
             toast(
-              <div className="h-[84px] px-4 w-[280px] mx-auto text-[#00A86B] text-center bg-[#DDDDDD] border-2 border-dashed border-[#00A86B] flex flex-col rounded-[32px] justify-center items-center">
+              <div className="h-[84px] px-4 w-[280px] mx-auto text-[#007A5E] text-center bg-[#DDDDDD] border-2 border-dashed border-[#00A86B] flex flex-col rounded-[32px] justify-center items-center">
                 Login successfully. Redirecting...
               </div>,
               {
@@ -59,10 +65,8 @@ export default function Login() {
             );
             setTimeout(() => navigate("/data"), 2000);
           } else {
-            localStorage.setItem("isUser", true);
-            localStorage.setItem("email", data.email);
             toast(
-              <div className="h-[84px] px-4 w-[280px] mx-auto text-[#00A86B] text-center bg-[#DDDDDD] border-2 border-dashed border-[#00A86B] flex flex-col rounded-[32px] justify-center items-center">
+              <div className="h-[84px] px-4 w-[280px] mx-auto text-[#007A5E] text-center bg-[#DDDDDD] border-2 border-dashed border-[#00A86B] flex flex-col rounded-[32px] justify-center items-center">
                 Login successfully. Redirecting...
               </div>,
               {
@@ -70,7 +74,10 @@ export default function Login() {
                 duration: 2000,
               }
             );
-            setTimeout(() => navigate("/view"), 2000);
+            setTimeout(() => { navigate("/view")
+              localStorage.setItem("isUser", true);
+              localStorage.setItem("email", data.email);
+            }, 2000);
           }
         } else {
           alert("login failed: User Does not exist");
@@ -78,7 +85,8 @@ export default function Login() {
       })
       .catch((err) => {
         // Extract and display error message
-        const errorMessage = err.response?.data?.error || "An unexpected error occurred";
+        const errorMessage =
+          err.response?.data?.error || "An unexpected error occurred";
         toast(
           <div className="h-[84px] px-4 w-[280px]] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A]  flex flex-col rounded-[32px] justify-center items-center]">
             {errorMessage}
@@ -109,7 +117,6 @@ export default function Login() {
             {error.message}
           </div>,
           {
-            
             classNames: {
               cancelButton: "bg-orange-400",
             },
@@ -146,7 +153,6 @@ export default function Login() {
           Glad to have you working with us
         </p>
         <Toaster
-          
           visibleToasts={1}
           toastOptions={{
             unstyled: true,
@@ -244,8 +250,6 @@ export default function Login() {
                       : "block"
                   } lg:h-10`}
                 />
-
-                
               </div>
             </div>
           </button>

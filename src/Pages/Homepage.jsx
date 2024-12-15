@@ -118,11 +118,8 @@ export default function Home() {
       .then((result) => {
         if (result.status == 201) {
           console.log("Form submitted successfully");
-          localStorage.removeItem("date");
-          localStorage.removeItem("email");
-          localStorage.removeItem("isLogin");
           toast(
-            <div className="h-[84px] px-4 w-[280px] mx-auto text-[#00A86B] text-center bg-[#DDDDDD] border-2 border-dashed border-[#00A86B] flex flex-col rounded-[32px] justify-center items-center">
+            <div className="h-[84px] px-4 w-[280px] mx-auto text-[#007A5E] text-center bg-[#DDDDDD] border-2 border-dashed border-[#00A86B] flex flex-col rounded-[32px] justify-center items-center">
               Form submitted successfully. Redirecting to login...
             </div>,
             {

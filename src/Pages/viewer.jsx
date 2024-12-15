@@ -9,12 +9,31 @@ import { Toaster, toast } from 'sonner'
 function CustomDateForm() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [error, setError] = useState("");
-  const [date, setDate] = useState();
+  const [date, setDate] = useState("");
   const navigate = useNavigate();
+  const [email, setEmail] = useState(() => {
+    // Retrieve the initial value from localStorage
+    const storedDate = localStorage.getItem("email");
+    try {
+      return storedDate ? JSON.stringify(storedDate) : ""; // Parse only if a value exists
+    } catch (error) {
+      console.error("Error parsing date from localStorage:", error);
+      return ""; // Fallback to an empty string if parsing fails
+    }
+  });
+ 
 
   useEffect(() => {
     localStorage.setItem("date", JSON.stringify(date));
   }, [date]);
+
+  
+  useEffect(() => {
+    if (email) {
+    } else {
+      navigate("/");
+    }
+  }, [email]);
 
   const today = new Date();
   const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -76,7 +95,7 @@ function CustomDateForm() {
 
   return (
     <div className="flex flex-col items-center h-[100vh] justify-center">
-      <h1>Pick Date to fill Data</h1>
+      <h1 className="font-poopins font-medium text-[16px] leading-[26px] lg:font-nexa-bold lg:text-[36px] lg:leading-[48px]">Pick Date to fill Data</h1>
       <Toaster 
           expand visibleToasts={2}
           toastOptions={{
@@ -86,7 +105,7 @@ function CustomDateForm() {
         
         />
       <form onSubmit={handleSubmit}>
-        <label className="flex flex-col">
+        <label className="flex text-[16px] leading-[26px] lg:text-[24px] lg:leading-[36px] mt-10  flex-col">
           Select Date:
           <DatePicker
             selected={selectedDate}

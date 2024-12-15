@@ -191,7 +191,7 @@ export default function Alldata() {
   ];
 
   return (
-    <div className="overflow-scroll">
+    <div className="overflow-scroll px-4">
       <h1 className="text-lg font-semibold text-center">
         All Reflection data for Africa
       </h1>

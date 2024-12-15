@@ -188,16 +188,20 @@ export default function Alldata() {
     "prayer_requests",
     "overall_reflection_on_the_day",
     "three_things_must_do_tomorrow",
+    "_id",
+    "createdAt",
+    "updatedAt",
+    "__v",
   ];
   
   return (
-    <div>
+    <div className="overflow-scroll px-4">
       <h1 className="text-lg font-semibold text-center">All data for Africa</h1>
       <div className="space-y-6 flex flex-col mt-10 w-[150%]">
         {Object.entries(africanCountriesByRegion).map(([region, countries], index) => (
           <div key={index}>
             <h3 className="text-lg font-semibold mb-2">{region}</h3>
-            <div className="flex space-x-2 flex-wrap">
+            <div className="flex space-x-2 ">
               {countries.map((country, idx) => (
                 <button
                   key={idx}
@@ -227,7 +231,7 @@ export default function Alldata() {
             </div>
           </div>
         ) : showData && filteredData.length > 0 ? (
-          <table className="mt-10 w-full border-collapse border border-gray-300">
+          <table className="mt-10 w-full border-collapse border border-gray-300 mr-4">
             <thead>
               <tr className="bg-[#E2063A] text-white">
                 {Object.keys(filteredData[0])

@@ -52,7 +52,7 @@ export default function Signup() {
         .then((result) => {
           if (result.status === 201) {
             toast(
-              <div className="h-[84px] px-4 w-[280px] mx-auto text-[#00A86B] text-center bg-[#DDDDDD] border-2 border-dashed border-[#00A86B] flex flex-col rounded-[32px] justify-center items-center">
+              <div className="h-[84px] px-4 w-[280px] mx-auto text-[#007A5E] text-center bg-[#DDDDDD] border-2 border-dashed border-[#00A86B] flex flex-col rounded-[32px] justify-center items-center">
                 User created successfully. Redirecting to login...
               </div>,
               {
