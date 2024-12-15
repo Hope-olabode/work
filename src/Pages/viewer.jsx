@@ -10,6 +10,7 @@ function CustomDateForm() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [error, setError] = useState("");
   const [date, setDate] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [email, setEmail] = useState(() => {
     // Retrieve the initial value from localStorage
@@ -39,6 +40,7 @@ function CustomDateForm() {
   const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
 
   const handleSubmit = (e) => {
+    setLoading(true);
     e.preventDefault();
 
     console.log(typeof selectedDate);
@@ -46,7 +48,7 @@ function CustomDateForm() {
     const D = new Date(selectedDate);
     const MM = D.getMonth() + 1;
     const YYYY = D.getFullYear();
-    const DD = D.getDay() + 1;
+    const DD = D.getDate();
     const realDate = (`${DD} ${MM} ${YYYY}`)
 
     const data = {
@@ -72,9 +74,17 @@ function CustomDateForm() {
       .post("https://server-zsg5.onrender.com/form/check", data)
       .then((result) => {
         if (result.data==="b") {
-          console.log("user created successfully");
-          navigate("/form");
           setDate(realDate);
+          toast(
+            <div className="h-[84px] px-4 w-[280px] mx-auto text-[#007A5E] text-center bg-[#DDDDDD] border-2 border-dashed border-[#00A86B] flex flex-col rounded-[32px] justify-center items-center">
+              There is no Data for this day Redirecting to form page
+            </div>,
+            {
+              position: "top-center",
+              duration: 2000,
+            }
+          );
+          setTimeout(() =>  navigate("/form"), 2000);
         } else {
           toast(<div className="h-[84px] px-4 w-[280px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A]  flex flex-col rounded-[32px] justify-center items-center]">Data for this day already exist, pick another day</div>, {
             position: 'top-center',
@@ -90,6 +100,9 @@ function CustomDateForm() {
         } else {
           console.log(err);
         }
+      })
+      .finally(() => {
+        setLoading(false); // Hide spinner
       });
   };
 
@@ -104,6 +117,13 @@ function CustomDateForm() {
           }}
         
         />
+        {loading && (
+        <div className="fixed inset-0 bg-white bg-opacity-70 flex justify-center items-center z-50">
+          <div className=" relative w-24 h-24 border-[10px] border-black border-opacity-30  rounded-full animate-spin-slow flex justify-center items-center">
+            <div className=" absolute w-24 h-24 border-[10px] border-[#E2063A] border-t-transparent border-b-transparent border-l-transparent rounded-full animate-spin"></div>
+          </div>
+        </div>
+      )}
       <form onSubmit={handleSubmit}>
         <label className="flex text-[16px] leading-[26px] lg:text-[24px] lg:leading-[36px] mt-10  flex-col">
           Select Date:
