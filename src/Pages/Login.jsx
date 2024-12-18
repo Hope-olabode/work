@@ -11,9 +11,59 @@ import ba from "../assets/Images/barrow.svg";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
+import React from "react";
+
+/* const StyledWrapper = `
+  .tooltip-container {
+    position: relative;
+    background: var(--background-tooltip-container);
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 48px;
+    height: 48px
+    font-size: 17px;
+  }
+
+  .tooltip {
+    --background-tooltip: #6e7681; 
+    position: absolute;
+    top: -39px; 
+    left: 50%;
+    transform: translateX(-50%);
+    padding-top: 2px;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s;
+    background: var(--background-tooltip);
+    color: white;
+    border-radius: 5px;
+    width: 210px;
+    height: 30px;
+    font-size: 13px;
+    text-align: center;
+  }
+
+  .tooltip::before {
+    position: absolute;
+    content: "";
+    height: 0.6em;
+    width: 0.6em;
+    bottom: -0.2em;
+    left: 50%;
+    transform: translate(-50%) rotate(45deg);
+    background: var(
+      --background-tooltip
+    ); 
+  }
+
+  .tooltip-container:hover .tooltip {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }`; */
 
 const schema = z.object({
-  email: z.string() /* .email("Incorrect email") */,
+  userName: z.string() /* .userName("Incorrect userName") */,
   password:
     z.string() /* .min(8, "Password doesn’t meet requirement").regex(/[A-Z]/, "Password must contain at least one uppercase letter")
   .regex(/[@$!%*?&]/, "Password must contain at least one special character (e.g., @, $, !, %, *, ?, &)"), */,
@@ -23,18 +73,23 @@ export default function Login() {
   const [isFocused, setIsFocused] = useState(false);
   const [isFocused2, setIsFocused2] = useState(false);
   const [hidden, setHidden] = useState(true);
+ 
 
   const [loading, setLoading] = useState(false);
+  const [visible, setVisible] = useState(false);
+
+  const handleTooltipTextChange = () => {
+    setTooltipText("Updated tooltip text!");
+  };
 
   useEffect(() => {
     localStorage.setItem("isAdmin", false);
   }, []);
 
   localStorage.removeItem("date");
-  localStorage.removeItem("email");
+  localStorage.removeItem("userName");
   localStorage.removeItem("isLogin");
   localStorage.removeItem("isUser");
-  localStorage.removeItem("email");
 
   const navigate = useNavigate();
   const {
@@ -74,9 +129,10 @@ export default function Login() {
                 duration: 2000,
               }
             );
-            setTimeout(() => { navigate("/view")
+            setTimeout(() => {
+              navigate("/view");
               localStorage.setItem("isUser", true);
-              localStorage.setItem("email", data.email);
+              localStorage.setItem("userName", data.userName);
             }, 2000);
           }
         } else {
@@ -88,7 +144,7 @@ export default function Login() {
         const errorMessage =
           err.response?.data?.error || "An unexpected error occurred";
         toast(
-          <div className="h-[84px] px-4 w-[280px]] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A]  flex flex-col rounded-[32px] justify-center items-center]">
+          <div className="h-[84px] px-4 w-[280px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A]  flex flex-col rounded-[32px] justify-center items-center]">
             {errorMessage}
           </div>,
           { position: "top-center", duration: 2000 }
@@ -98,12 +154,12 @@ export default function Login() {
         setLoading(false); // Hide spinner
       });
   };
-  const email = watch("email"); // watch input value
+  const userName = watch("userName"); // watch input value
   const password = watch("password"); // watch input value
 
   useEffect(() => {
-    setIsFocused2(email && email.trim().length > 0);
-  }, [email]);
+    setIsFocused2(userName && userName.trim().length > 0);
+  }, [userName]);
 
   useEffect(() => {
     setIsFocused(password && password.trim().length > 0);
@@ -142,6 +198,7 @@ export default function Login() {
           </div>
         </div>
       )}
+
       <div className="max-w-[482px]">
         <p className="text-center mb-2 text-[#9A9A9A] bg-[#ffffff02] font-poopins font-medium text-[16px] leading-[26px] lg:font-nexa-bold lg:text-[36px] lg:leading-[48px] lg:mb-4">
           Login
@@ -155,54 +212,68 @@ export default function Login() {
         <Toaster
           visibleToasts={1}
           toastOptions={{
-            unstyled: true,
             className: "class",
           }}
         />
         <form className="mt-10 lg:mt-14" onSubmit={handleSubmit(onSubmit)}>
           {/* register your input into the hook by invoking the "register" function */}
           <input
-            name="email"
+            name="userName"
             className={`w-full h-12 border-2 border-[#DDDDDD] rounded-full active:border-none focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px] lg:h-[72px] lg:text-[16px] lg:leading-[26px] ${
               isFocused2
                 ? "bg-black text-white placeholder:text-white border-black border-2"
                 : ""
             }`}
-            {...register("email")}
-            placeholder="Email Address"
+            {...register("userName")}
+            placeholder="User Name"
             type="string"
-            id="email"
+            id="userName"
           />
           {/* include validation with required or other standard HTML validation rules */}
           <div
-            className={`flex items-center content-center h-12 border-2 border-[#DDDDDD] rounded-full mt-4 pl-6 pr-2 font-poopins text-[14px] leading-[22px] lg:h-[72px] lg:text-[16px] lg:leading-[26px] ${
+            className={`flex items-center content-center h-12 border-2 border-[#DDDDDD] rounded-full mt-4  pr-2 font-poopins text-[14px] leading-[22px] lg:h-[72px] lg:text-[16px] lg:leading-[26px] ${
               isFocused ? "bg-black text-white border-black border-2" : ""
             }`}
           >
             <input
               name="password"
-              className={`w-full email h-full active:border-none focus:outline-none ${
+              className={`w-full userName pl-6 h-full active:border-none rounded-full focus:outline-none ${
                 isFocused ? "bg-black text-white placeholder:text-white" : ""
               }`}
               {...register("password")}
               placeholder="Password"
               type={hidden ? "password" : "text"}
             />
-            {hidden ? (
-              <img
-                className="w-12"
-                onClick={() => setHidden(!hidden)}
-                src={isFocused ? hpas2 : hpas}
-                alt=""
-              />
-            ) : (
-              <img
-                className="w-12"
-                onClick={() => setHidden(!hidden)}
-                src={isFocused ? hpas4 : hpas3}
-                alt=""
-              />
-            )}
+
+            <div
+              className="relative inline-block"
+              onMouseEnter={() => setVisible(true)}
+              onMouseLeave={() => setVisible(false)}
+            >
+              {/* Tooltip */}
+              {visible && (
+                <div className="tooltip absolute z-50 px-3 py-1 text-sm text-white bg-gray-700 rounded shadow-lg whitespace-nowrap -left-[60px] -top-6">
+                  {hidden ? "click to view password" : "click to hide password"}
+                </div>
+              )}
+
+              {/* Trigger */}
+              {hidden ? (
+                <img
+                  className="w-12"
+                  onClick={() => setHidden(!hidden)}
+                  src={isFocused ? hpas2 : hpas}
+                  alt=""
+                />
+              ) : (
+                <img
+                  className="w-12"
+                  onClick={() => setHidden(!hidden)}
+                  src={isFocused ? hpas4 : hpas3}
+                  alt=""
+                />
+              )}
+            </div>
           </div>
           <p className="font-poopins text-[14px] leading-[18px] pl-2 pt-0.5 text-[#9A9A9A]">
             8 characters including a letter and a number
@@ -210,18 +281,18 @@ export default function Login() {
 
           {/* errors will return when field validation fails  */}
           {/* {errors.password && toast.error('Event has not been created')} */}
-          {/* <input className="mt-4 h-12 bg"   disabled={password?.trim()?.length === 0 && email?.trim()?.length === 0}/> */}
+          {/* <input className="mt-4 h-12 bg"   disabled={password?.trim()?.length === 0 && userName?.trim()?.length === 0}/> */}
 
           <button
             type="submit"
             className="bg-[#E2063A] mt-4 text-white  rounded-full relative overflow-hidden group lg:h-[72px] lg:w-full  w-[100%]"
             disabled={
-              password?.trim()?.length === 0 || email?.trim()?.length === 0
+              password?.trim()?.length === 0 || userName?.trim()?.length === 0
             }
           >
             <div
               className={`${
-                password?.trim()?.length === 0 || email?.trim()?.length === 0
+                password?.trim()?.length === 0 || userName?.trim()?.length === 0
                   ? "inset-0 bg-[#ffffffd0] z-10 absolute w-100%"
                   : ""
               } relative  px-4 py-[13px] lg:py-[23px] lg:px-0  `}
@@ -236,7 +307,7 @@ export default function Login() {
                   src={wc}
                   className={`${
                     password?.trim()?.length === 0 ||
-                    email?.trim()?.length === 0
+                    userName?.trim()?.length === 0
                       ? "hi"
                       : "hidden"
                   } lg:h-10`}
@@ -245,7 +316,7 @@ export default function Login() {
                   src={ba}
                   className={`${
                     password?.trim()?.length === 0 ||
-                    email?.trim()?.length === 0
+                    userName?.trim()?.length === 0
                       ? "hidden"
                       : "block"
                   } lg:h-10`}

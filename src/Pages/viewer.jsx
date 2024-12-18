@@ -12,9 +12,9 @@ function CustomDateForm() {
   const [date, setDate] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const [email, setEmail] = useState(() => {
+  const [userName, setuserName] = useState(() => {
     // Retrieve the initial value from localStorage
-    const storedDate = localStorage.getItem("email");
+    const storedDate = localStorage.getItem("userName");
     try {
       return storedDate ? JSON.stringify(storedDate) : ""; // Parse only if a value exists
     } catch (error) {
@@ -30,11 +30,11 @@ function CustomDateForm() {
 
   
   useEffect(() => {
-    if (email) {
+    if (userName) {
     } else {
       navigate("/");
     }
-  }, [email]);
+  }, [userName]);
 
   const today = new Date();
   const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -53,7 +53,7 @@ function CustomDateForm() {
 
     const data = {
       date: realDate,
-      email: localStorage.getItem("email")
+      userName: localStorage.getItem("userName")
     }
      
     console.log(typeof realDate);
@@ -112,7 +112,7 @@ function CustomDateForm() {
       <Toaster 
           expand visibleToasts={2}
           toastOptions={{
-            unstyled: true,
+            
             className: 'class',
           }}
         

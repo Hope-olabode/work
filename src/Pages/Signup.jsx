@@ -1,110 +1,123 @@
-import { useState, useEffect, } from "react";
-import {useNavigate} from "react-router-dom"
-import { useForm } from "react-hook-form"
-import { Toaster, toast } from 'sonner'
-import {z} from "zod"
-import hpas from "../assets/Images/hpas.svg"
-import hpas2 from "../assets/Images/hpas2.svg"
-import hpas3 from "../assets/Images/hpas3.svg"
-import hpas4 from "../assets/Images/hpas4.svg"
-import wc from "../assets/Images/wcircle.svg"
-import ba from "../assets/Images/barrow.svg"
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { Toaster, toast } from "sonner";
+import { z } from "zod";
+import hpas from "../assets/Images/hpas.svg";
+import hpas2 from "../assets/Images/hpas2.svg";
+import hpas3 from "../assets/Images/hpas3.svg";
+import hpas4 from "../assets/Images/hpas4.svg";
+import wc from "../assets/Images/wcircle.svg";
+import ba from "../assets/Images/barrow.svg";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios"
+import axios from "axios";
 
-
-const schema =z.object({
+const schema = z.object({
   fullname: z.string(),
-  email: z.string()/* .email("Incorrect email") */,
-  password:  z.string()/* .min(8, "Password doesn’t meet requirement").regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+  userName: z.string(),
+  password:
+    z.string() /* .min(8, "Password doesn’t meet requirement").regex(/[A-Z]/, "Password must contain at least one uppercase letter")
   .regex(/[@$!%*?&]/, "Password must contain at least one special character (e.g., @, $, !, %, *, ?, &)") */,
-  password2:  z.string()/* .min(8, "Password doesn’t meet requirement").regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+  password2:
+    z.string() /* .min(8, "Password doesn’t meet requirement").regex(/[A-Z]/, "Password must contain at least one uppercase letter")
   .regex(/[@$!%*?&]/, "Password must contain at least one special character (e.g., @, $, !, %, *, ?, &)") */,
-})
+});
 
 export default function Signup() {
   const [isFocused, setIsFocused] = useState(false);
   const [isFocused2, setIsFocused2] = useState(false);
   const [isFocused3, setIsFocused3] = useState(false);
   const [isFocused5, setIsFocused5] = useState(false);
-  const [hidden, setHidden] = useState(true)
-  const [hidden2, setHidden2] = useState(true)
+  const [hidden, setHidden] = useState(true);
+  const [hidden2, setHidden2] = useState(true);
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate()
+  const [visible, setVisible] = useState(false);
+  const [visible2, setVisible2] = useState(false);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors, isSubmitting },
-  } = useForm(
-    {
-      resolver: zodResolver(schema)
-    }
-  )
+  } = useForm({
+    resolver: zodResolver(schema),
+  });
 
   const onSubmit = (data) => {
-    setLoading(true); // Show spinner at the start
-
-    if (data.password === data.password2) {
-      // Passwords match, proceed with API call
-      axios
-        .post("https://server-zsg5.onrender.com/auth/signup", data)
-        .then((result) => {
-          if (result.status === 201) {
-            toast(
-              <div className="h-[84px] px-4 w-[280px] mx-auto text-[#007A5E] text-center bg-[#DDDDDD] border-2 border-dashed border-[#00A86B] flex flex-col rounded-[32px] justify-center items-center">
-                User created successfully. Redirecting to login...
-              </div>,
-              {
-                position: "top-center",
-                duration: 2000,
-              }
-            );
-            setTimeout(() => navigate("/"), 2000); // Delay navigation for better UX
-          }
-        })
-        .catch((err) => {
-          if (err.response && err.response.status === 400) {
-            toast(
-              <div className="h-[84px px-4] w-[280px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A] flex flex-col rounded-[32px] justify-center items-center">
-                Email already exists. Please use a different email.
-              </div>,
-              {
-                position: "top-center",
-                duration: 2000,
-              }
-            );
-          } else {
-            console.error("Unexpected error:", err);
-            toast(
-              <div className="h-[84px] px-4 w-[280px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A] flex flex-col rounded-[32px] justify-center items-center">
-                Something went wrong. Please try again later.
-              </div>,
-              {
-                position: "top-center",
-                duration: 2000,
-              }
-            );
-          }
-        })
-        .finally(() => {
-          setLoading(false); // Hide spinner after API call
-        });
-    } else {
-      // Passwords do not match
-      toast(
-        <div className="h-[84px] w-[280px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A] flex flex-col rounded-[32px] justify-center items-center">
-          Passwords do not match. Please try again.
+    // Show spinner at the start
+    if (userName.trim().length < 5) {
+      return toast(
+        <div className="h-[84px] px-4 w-[280px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A] flex flex-col rounded-[32px] justify-center items-center">
+          user name cannot be less than 5 characters.
         </div>,
         {
           position: "top-center",
           duration: 2000,
         }
       );
+    } else {
+      setLoading(true);
+      if (data.password === data.password2) {
+        // Passwords match, proceed with API call
+        axios
+          .post("https://server-zsg5.onrender.com/auth/signup", data)
+          .then((result) => {
+            if (result.status === 201) {
+              toast(
+                <div className="h-[84px] px-4 w-[280px] mx-auto text-[#007A5E] text-center bg-[#DDDDDD] border-2 border-dashed border-[#00A86B] flex flex-col rounded-[32px] justify-center items-center">
+                  User created successfully. Redirecting to login...
+                </div>,
+                {
+                  position: "top-center",
+                  duration: 2000,
+                }
+              );
+              setTimeout(() => navigate("/"), 2000); // Delay navigation for better UX
+            }
+          })
+          .catch((err) => {
+            if (err.response && err.response.status === 400) {
+              toast(
+                <div className="h-[84px] px-4 w-[280px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A] flex flex-col rounded-[32px] justify-center items-center">
+                  user name already exists. Please use a different userName.
+                </div>,
+                {
+                  position: "top-center",
+                  duration: 2000,
+                }
+              );
+            } else {
+              console.error("Unexpected error:", err);
+              toast(
+                <div className="h-[84px] px-4 w-[280px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A] flex flex-col rounded-[32px] justify-center items-center">
+                  Something went wrong. Please try again later.
+                </div>,
+                {
+                  position: "top-center",
+                  duration: 2000,
+                }
+              );
+            }
+          })
+          .finally(() => {
+            setLoading(false); // Hide spinner after API call
+          });
+      } else {
+        // Passwords do not match
+        toast(
+          <div className="h-[84px] px-4 w-[280px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A] flex flex-col rounded-[32px] justify-center items-center">
+            Passwords do not match. Please try again.
+          </div>,
+          {
+            position: "top-center",
+            duration: 2000,
+          }
+        );
+      }
     }
   };
-  
-  const email = watch("email"); // watch input value
+
+  const userName = watch("userName"); // watch input value
   const fullname = watch("fullname"); // watch input value
   const password = watch("password"); // watch input value
   const password2 = watch("password2"); // watch input value
@@ -113,11 +126,10 @@ export default function Signup() {
     setIsFocused3(fullname && fullname.trim().length > 0);
   }, [fullname]);
 
-
   useEffect(() => {
-    setIsFocused2(email && email.trim().length > 0);
-  }, [email]);
-  
+    setIsFocused2(userName && userName.trim().length > 0);
+  }, [userName]);
+
   useEffect(() => {
     setIsFocused(password && password.trim().length > 0);
   }, [password]);
@@ -126,23 +138,25 @@ export default function Signup() {
     setIsFocused5(password2 && password2.trim().length > 0);
   }, [password2]);
 
-  
-
-  useEffect(()=> {
+  useEffect(() => {
     if (Object.keys(errors).length > 0) {
-      Object.values(errors).forEach((error)=> {
-        toast(<div className="h-[84px] px-4 w-[280px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A]  flex flex-col rounded-[32px] justify-center items-center]">{error.message}</div>, {
-          position: 'top-center',
-          classNames: {
-            cancelButton: 'bg-orange-400'
-          },
-          duration: 2000,
-        })
-      })
+      Object.values(errors).forEach((error) => {
+        toast(
+          <div className="h-[84px] px-4 w-[280px] mx-auto text-[#E2063A] text-center bg-[#DDDDDD] border-2 border-dashed border-[#E2063A]  flex flex-col rounded-[32px] justify-center items-center]">
+            {error.message}
+          </div>,
+          {
+            position: "top-center",
+            classNames: {
+              cancelButton: "bg-orange-400",
+            },
+            duration: 2000,
+          }
+        );
+      });
     }
-  }, [errors])
-  
-   
+  }, [errors]);
+
   return (
     <div className="mt-[96px] py-32 px-4 flex flex-col content-center items-center">
       {loading && (
@@ -153,74 +167,204 @@ export default function Signup() {
         </div>
       )}
       <div className="max-w-[482px]">
-        <p className="text-center mb-2 text-[#9A9A9A] font-poopins font-medium text-[16px] leading-[26px] lg:font-nexa-bold lg:text-[36px] lg:leading-[48px] lg:mb-4">Create Account</p>
-        <p className="text-center mt-2 font-poopins text-[14px] leading-[22px] lg:text-[20px] lg:leading-[32px]">Create your account for smooth and uninterrupted experience with us</p>
-        <Toaster 
-          expand visibleToasts={2}
+        <p className="text-center mb-2 text-[#9A9A9A] font-poopins font-medium text-[16px] leading-[26px] lg:font-nexa-bold lg:text-[36px] lg:leading-[48px] lg:mb-4">
+          Create Account
+        </p>
+        <p className="text-center mt-2 font-poopins text-[14px] leading-[22px] lg:text-[20px] lg:leading-[32px]">
+          Create your account for smooth and uninterrupted experience with us
+        </p>
+        <Toaster
+          expand
+          visibleToasts={2}
           toastOptions={{
-            unstyled: true,
-            className: 'class',
+            className: "class",
           }}
-        
         />
         <form className="mt-10 lg:mt-14" onSubmit={handleSubmit(onSubmit)}>
           {/* register your input into the hook by invoking the "register" function */}
           <input
             spellCheck="false"
-            className={`w-full h-12 border-2 border-[#DDDDDD] rounded-full active:border-none focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px] lg:h-[72px] lg:text-[16px] lg:leading-[26px] ${isFocused3 ? "bg-black text-white placeholder:text-white border-black border-2":""}`}
+            className={`w-full h-12 border-2 border-[#DDDDDD] rounded-full active:border-none focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px] lg:h-[72px] lg:text-[16px] lg:leading-[26px] ${
+              isFocused3
+                ? "bg-black text-white placeholder:text-white border-black border-2"
+                : ""
+            }`}
             {...register("fullname")}
             placeholder="Full Name"
             type="string"
             id="name"
           />
           <input
-            className={`w-full mt-4 h-12 border-2 border-[#DDDDDD] rounded-full active:border-none focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px] lg:h-[72px] lg:text-[16px] lg:leading-[26px] ${isFocused2 ? "bg-black text-white placeholder:text-white border-black border-2":""}`}
-            {...register("email")}
-            placeholder="Email Address"
+            className={`w-full mt-4 h-12 border-2 border-[#DDDDDD] rounded-full active:border-none focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px] lg:h-[72px] lg:text-[16px] lg:leading-[26px] ${
+              isFocused2
+                ? "bg-black text-white placeholder:text-white border-black border-2"
+                : ""
+            }`}
+            {...register("userName")}
+            placeholder="User Name"
             type="string"
-            id="email"
+            id="userName"
           />
           {/* include validation with required or other standard HTML validation rules */}
-          <div className={`flex items-center content-center h-12 border-2 border-[#DDDDDD] rounded-full mt-4 pl-6 pr-2 font-poopins text-[14px] leading-[22px] lg:h-[72px] lg:text-[16px] lg:leading-[26px] ${isFocused ? "bg-black text-white border-black border-2":""}`}>
+          <div
+            className={`flex items-center content-center h-12 border-2 border-[#DDDDDD] rounded-full mt-4 pl-6 pr-2 font-poopins text-[14px] leading-[22px] lg:h-[72px] lg:text-[16px] lg:leading-[26px] ${
+              isFocused ? "bg-black text-white border-black border-2" : ""
+            }`}
+          >
             <input
-              className={`w-full email  active:border-none focus:outline-none ${isFocused ? "bg-black text-white placeholder:text-white":""}`}
-              
+              className={`w-full userName  active:border-none focus:outline-none ${
+                isFocused ? "bg-black text-white placeholder:text-white" : ""
+              }`}
               {...register("password")}
               placeholder="Password"
               type={hidden ? "password" : "text"}
             />
-            {hidden ? <img className="w-12" onClick={() => setHidden(!hidden)} src={isFocused ? hpas2 : hpas} alt="" /> : <img className="w-12" onClick={() => setHidden(!hidden)} src={isFocused ? hpas4 : hpas3} alt="" />}
+            <div
+              className="relative inline-block"
+              onMouseEnter={() => setVisible(true)}
+              onMouseLeave={() => setVisible(false)}
+            >
+              {/* Tooltip */}
+              {visible && (
+                <div className="tooltip absolute z-50 px-3 py-1 text-sm text-white bg-gray-700 rounded shadow-lg whitespace-nowrap -left-[60px] -top-6">
+                  {hidden ? "click to view password" : "click to hide password"}
+                </div>
+              )}
+
+              {/* Trigger */}
+              {hidden ? (
+                <img
+                  className="w-12"
+                  onClick={() => setHidden(!hidden)}
+                  src={isFocused ? hpas2 : hpas}
+                  alt=""
+                />
+              ) : (
+                <img
+                  className="w-12"
+                  onClick={() => setHidden(!hidden)}
+                  src={isFocused ? hpas4 : hpas3}
+                  alt=""
+                />
+              )}
+            </div>
           </div>
 
-          <div className={`flex items-center content-center h-12 border-2 border-[#DDDDDD] rounded-full mt-4 pl-6 pr-2 font-poopins text-[14px] leading-[22px] lg:h-[72px] lg:text-[16px] lg:leading-[26px] ${isFocused5 ? "bg-black text-white border-black border-2":""}`}>
+          <div
+            className={`flex items-center content-center h-12 border-2 border-[#DDDDDD] rounded-full mt-4 pl-6 pr-2 font-poopins text-[14px] leading-[22px] lg:h-[72px] lg:text-[16px] lg:leading-[26px] ${
+              isFocused5 ? "bg-black text-white border-black border-2" : ""
+            }`}
+          >
             <input
-              className={`w-full email  active:border-none focus:outline-none ${isFocused5 ? "bg-black text-white placeholder:text-white":""}`}
-              
+              className={`w-full userName  active:border-none focus:outline-none ${
+                isFocused5 ? "bg-black text-white placeholder:text-white" : ""
+              }`}
               {...register("password2")}
               placeholder="Confirm Passsword"
               type={hidden2 ? "password" : "text"}
             />
-            {hidden2 ? <img className="w-12" onClick={() => setHidden2(!hidden2)} src={isFocused5 ? hpas2 : hpas} alt="" /> : <img className="w-12" onClick={() => setHidden2(!hidden2)} src={isFocused5 ? hpas4 : hpas3} alt="" />}
+            <div
+              className="relative inline-block"
+              onMouseEnter={() => setVisible2(true)}
+              onMouseLeave={() => setVisible2(false)}
+            >
+              {/* Tooltip */}
+              {visible2 && (
+                <div className="tooltip absolute z-50 px-3 py-1 text-sm text-white bg-gray-700 rounded shadow-lg whitespace-nowrap -left-[60px] -top-6">
+                  {hidden2 ? "click to view password" : "click to hide password"}
+                </div>
+              )}
+
+              {/* Trigger */}
+              {hidden2 ? (
+                <img
+                  className="w-12"
+                  onClick={() => setHidden2(!hidden2)}
+                  src={isFocused5 ? hpas2 : hpas}
+                  alt=""
+                />
+              ) : (
+                <img
+                  className="w-12"
+                  onClick={() => setHidden2(!hidden2)}
+                  src={isFocused5 ? hpas4 : hpas3}
+                  alt=""
+                />
+              )}
+            </div>
           </div>
-          <p className="font-poopins text-[14px] leading-[18px] pl-2 pt-0.5 text-[#9A9A9A]">8 characters including a letter and a number</p>
-          
+          <p className="font-poopins text-[14px] leading-[18px] pl-2 pt-0.5 text-[#9A9A9A]">
+            8 characters including a letter and a number
+          </p>
+
           {/* errors will return when field validation fails  */}
           {/* {errors.password && toast.error('Event has not been created')} */}
-          {/* <input className="mt-4 h-12 bg"   disabled={password?.trim()?.length === 0 && email?.trim()?.length === 0}/> */}
-          
-          <button type="submit" className="bg-[#E2063A] mt-4 text-white  rounded-full relative overflow-hidden group lg:h-[72px] lg:w-full  w-[100%]" disabled={password?.trim()?.length === 0 || email?.trim()?.length === 0 || password2?.trim()?.length === 0 || fullname?.trim()?.length === 0} >
-            <div className={`${password?.trim()?.length === 0 || password2?.trim()?.length === 0 || email?.trim()?.length === 0 || fullname?.trim()?.length === 0 ? "inset-0 bg-[#ffffffd0] z-10 absolute w-100%" : ""} relative  px-4 py-[13px] lg:py-[23px] lg:px-0  `}>
-              <span className="relative z-10 "><p className="font-nexa-bold text-[14px] leading-[22px] text-left lg:text-[16px] lg:leading-[26px] lg:pl-[40px]">Create Account</p></span>
+          {/* <input className="mt-4 h-12 bg"   disabled={password?.trim()?.length === 0 && userName?.trim()?.length === 0}/> */}
+
+          <button
+            type="submit"
+            className="bg-[#E2063A] mt-4 text-white  rounded-full relative overflow-hidden group lg:h-[72px] lg:w-full  w-[100%]"
+            disabled={
+              password?.trim()?.length === 0 ||
+              userName?.trim()?.length === 0 ||
+              password2?.trim()?.length === 0 ||
+              fullname?.trim()?.length === 0
+            }
+          >
+            <div
+              className={`${
+                password?.trim()?.length === 0 ||
+                password2?.trim()?.length === 0 ||
+                userName?.trim()?.length === 0 ||
+                fullname?.trim()?.length === 0
+                  ? "inset-0 bg-[#ffffffd0] z-10 absolute w-100%"
+                  : ""
+              } relative  px-4 py-[13px] lg:py-[23px] lg:px-0  `}
+            >
+              <span className="relative z-10 ">
+                <p className="font-nexa-bold text-[14px] leading-[22px] text-left lg:text-[16px] lg:leading-[26px] lg:pl-[40px]">
+                  Create Account
+                </p>
+              </span>
               <div className="absolute right-[10px] top-[50%] translate-y-[-50%] lg:right-[25px]">
-                <img src={wc} className={`${password?.trim()?.length === 0 || email?.trim()?.length === 0 || password2?.trim()?.length === 0 || fullname?.trim()?.length === 0 ? "" : "hidden"} lg:h-10`}/>
-                <img src={ba} className={`${password?.trim()?.length === 0 || email?.trim()?.length === 0 || password2?.trim()?.length === 0 || fullname?.trim()?.length === 0 ? "hidden" : "block"} lg:h-10`}/>
+                <img
+                  src={wc}
+                  className={`${
+                    password?.trim()?.length === 0 ||
+                    userName?.trim()?.length === 0 ||
+                    password2?.trim()?.length === 0 ||
+                    fullname?.trim()?.length === 0
+                      ? ""
+                      : "hidden"
+                  } lg:h-10`}
+                />
+                <img
+                  src={ba}
+                  className={`${
+                    password?.trim()?.length === 0 ||
+                    userName?.trim()?.length === 0 ||
+                    password2?.trim()?.length === 0 ||
+                    fullname?.trim()?.length === 0
+                      ? "hidden"
+                      : "block"
+                  } lg:h-10`}
+                />
               </div>
             </div>
           </button>
-          
         </form>
       </div>
-      <p className="mt-10">Already have an account ? <button className="underline text-blue-500" onClick={()=>{navigate("/")}}>Login</button></p>
+      <p className="mt-10">
+        Already have an account ?{" "}
+        <button
+          className="underline text-blue-500"
+          onClick={() => {
+            navigate("/");
+          }}
+        >
+          Login
+        </button>
+      </p>
     </div>
-  )
+  );
 }

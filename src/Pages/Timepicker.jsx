@@ -51,7 +51,7 @@ function MultiInputForm() {
     console.log("Name:", data.name);
     console.log("Durations:", durationValues);
     alert(
-      `Name: ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone}\nDurations: ${durationValues.join(", ")}`
+      `Name: ${data.name}\nuserName: ${data.userName}\nPhone: ${data.phone}\nDurations: ${durationValues.join(", ")}`
     );
   };
 

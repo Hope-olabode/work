@@ -110,7 +110,7 @@ export default function Home() {
       exercise: durations[3],
       country: data.country,
       date: date,
-      email: localStorage.getItem("email"),
+      userName: localStorage.getItem("userName"),
     };
     console.log(newData);
     axios
@@ -224,7 +224,7 @@ export default function Home() {
             expand
             visibleToasts={1}
             toastOptions={{
-              unstyled: true,
+              
               className: "class",
             }}
           />
