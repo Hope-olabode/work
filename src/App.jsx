@@ -6,6 +6,7 @@ import Login from "./Pages/Login.jsx";
 import Timepicker from "./Pages/Timepicker.jsx";
 import Viewer from "./Pages/viewer.jsx";
 import Alldata from "./Pages/Alldata.jsx";
+import Month from "./Pages/monthly.jsx"
 
 import Spin from "./Pages/Spin.jsx";
 import Reflection from "./Pages/Reflections.jsx";
@@ -21,6 +22,7 @@ export default function App() {
       <Route exact path="/data" element={<Alldata />} />
       <Route exact path="/s" element={<Spin />} />
       <Route exact path="/Reflect" element={<Reflection />} />
+      <Route exact path="/month" element={<Month />} />
     </Routes>
   );
 }

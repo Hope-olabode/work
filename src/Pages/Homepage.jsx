@@ -15,7 +15,9 @@ import axios from "axios";
 export default function Home() {
   const [durations, setDurations] = useState(["", "", "", ""]);
   const [selectedCountry, setSelectedCountry] = useState("");
+  const [morning, setMorning] = useState("");
   const [loading, setLoading] = useState(false);
+  const [regular, setRegular] = useState("");
   const mqd = false;
   const [date, setDate] = useState(() => {
     // Retrieve the initial value from localStorage
@@ -23,10 +25,23 @@ export default function Home() {
     try {
       return storedDate ? JSON.parse(storedDate) : ""; // Parse only if a value exists
     } catch (error) {
-      console.error("Error parsing date from localStorage:", error);
       return ""; // Fallback to an empty string if parsing fails
     }
   });
+
+
+  const morningServiceAttendance = [
+    "Yes",
+    "No",
+    "No morning service atendance",
+  ];
+
+  const regularServiceAttendance = [
+    "Wednesday",
+    "Friday",
+    "Sunday",
+    "No regular service atendance",
+  ];
 
   const africanCountries = [
     "Algeria",
@@ -84,9 +99,6 @@ export default function Home() {
     "Zimbabwe",
   ];
 
-  const handleCountryChange = (e) => {
-    setSelectedCountry(e.target.value);
-  };
   const navigate = useNavigate();
   const {
     register,
@@ -95,22 +107,22 @@ export default function Home() {
     clearErrors,
     watch,
     formState: { errors, isSubmitting },
-  } = useForm(/* {
-    resolver: zodResolver(schema),
-  } */);
+  } = useForm();
 
   const onSubmit = (data) => {
     setLoading(true);
-    console.log(durations);
+    console.log(data)
     const newData = {
       ...data,
       evangelism_hours: durations[0],
       bible_reading_and_meditation: durations[1],
       prayer: durations[2],
       exercise: durations[3],
-      country: data.country,
+      country: selectedCountry,
       date: date,
-      userName: localStorage.getItem("userName"),
+      morning_service_attendance: morning,
+      regular_service_attendance: regular,
+      user_name: localStorage.getItem("userName"),
     };
     console.log(newData);
     axios
@@ -152,8 +164,6 @@ export default function Home() {
         setLoading(false); // Hide spinner
       });
   };
-
-  console.log(2);
 
   useEffect(() => {
     if (date) {
@@ -224,7 +234,6 @@ export default function Home() {
             expand
             visibleToasts={1}
             toastOptions={{
-              
               className: "class",
             }}
           />
@@ -241,7 +250,7 @@ export default function Home() {
                   className="mt-2 w-full h-12 border-2 border-[#DDDDDD] rounded-[8px] focus:border-[#E2063A] focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px] lg:h-[72px] lg:text-[16px] lg:leading-[26px]"
                   {...register("name")}
                   placeholder="Name"
-                  type="string"
+                  type="text"
                 />
               </div>
 
@@ -249,23 +258,21 @@ export default function Home() {
                 <p>Country :</p>
                 <select
                   id="country"
+                  value={selectedCountry}
+                  {...register("country")}
                   className="mt-2 w-full h-12 border-2 border-[#DDDDDD] rounded-[8px] focus:border-[#E2063A] focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px] lg:h-[72px] lg:text-[16px] lg:leading-[26px]"
-                  {...register("country")} // Adding validation
+                  onChange={(e) => {
+                    setSelectedCountry(e.target.value); // Update local state
+                    // setValue("country", e.target.value); // Update React Hook Form
+                  }}
                 >
-                  <option value="" >
-                    Select a Country
-                  </option>
+                  <option value="">Select a Country</option>
                   {africanCountries.map((country, index) => (
                     <option key={index} value={country}>
                       {country}
                     </option>
                   ))}
                 </select>
-                {errors.country && (
-                  <p className="text-sm text-red-600">
-                    {errors.country.message}
-                  </p>
-                )}
               </div>
 
               <div className="div">
@@ -275,7 +282,7 @@ export default function Home() {
                   className="mt-2 w-full h-12 border-2 border-[#DDDDDD] rounded-[8px] focus:border-[#E2063A] focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px] lg:h-[72px] lg:text-[16px] lg:leading-[26px]"
                   {...register("church")}
                   placeholder="Church Name"
-                  type="string"
+                  type="text"
                 />
               </div>
 
@@ -304,6 +311,11 @@ export default function Home() {
                   {...register("people_reached")}
                   placeholder="Input Number"
                   type="number"
+                  onKeyDown={(e) => {
+                    if (e.key === "e" || e.key === "E" || e.key === "+" || e.key === "-") {
+                      e.preventDefault();
+                    }
+                  }}
                 />
               </div>
 
@@ -315,6 +327,11 @@ export default function Home() {
                   {...register("contacts_received")}
                   placeholder="Input Number"
                   type="number"
+                  onKeyDown={(e) => {
+                    if (e.key === "e" || e.key === "E" || e.key === "+" || e.key === "-") {
+                      e.preventDefault();
+                    }
+                  }}
                 />
               </div>
 
@@ -324,8 +341,13 @@ export default function Home() {
                   spellCheck="false"
                   className="mt-2 w-full h-12 border-2 border-[#DDDDDD] rounded-[8px] focus:border-[#E2063A] focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px] lg:h-[72px] lg:text-[16px] lg:leading-[26px]"
                   {...register("bible_study_sessions")}
-                 placeholder="Input Number"
+                  placeholder="Input Number"
                   type="number"
+                  onKeyDown={(e) => {
+                    if (e.key === "e" || e.key === "E" || e.key === "+" || e.key === "-") {
+                      e.preventDefault();
+                    }
+                  }}
                 />
               </div>
 
@@ -335,8 +357,13 @@ export default function Home() {
                   spellCheck="false"
                   className="mt-2 w-full h-12 border-2 border-[#DDDDDD] rounded-[8px] focus:border-[#E2063A] focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px] lg:h-[72px] lg:text-[16px] lg:leading-[26px]"
                   {...register("bible_study_attendants")}
-                 placeholder="Input Number"
+                  placeholder="Input Number"
                   type="number"
+                  onKeyDown={(e) => {
+                    if (e.key === "e" || e.key === "E" || e.key === "+" || e.key === "-") {
+                      e.preventDefault();
+                    }
+                  }}
                 />
               </div>
 
@@ -346,8 +373,13 @@ export default function Home() {
                   spellCheck="false"
                   className="mt-2 w-full h-12 border-2 border-[#DDDDDD] rounded-[8px] focus:border-[#E2063A] focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px] lg:h-[72px] lg:text-[16px] lg:leading-[26px]"
                   {...register("unique_bible_study_attendants")}
-                 placeholder="Input Number"
+                  placeholder="Input Number"
                   type="number"
+                  onKeyDown={(e) => {
+                    if (e.key === "e" || e.key === "E" || e.key === "+" || e.key === "-") {
+                      e.preventDefault();
+                    }
+                  }}
                 />
               </div>
 
@@ -357,8 +389,13 @@ export default function Home() {
                   spellCheck="false"
                   className="mt-2 w-full h-12 border-2 border-[#DDDDDD] rounded-[8px] focus:border-[#E2063A] focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px] lg:h-[72px] lg:text-[16px] lg:leading-[26px]"
                   {...register("newcomers")}
-                 placeholder="Input Number"
+                  placeholder="Input Number"
                   type="number"
+                  onKeyDown={(e) => {
+                    if (e.key === "e" || e.key === "E" || e.key === "+" || e.key === "-") {
+                      e.preventDefault();
+                    }
+                  }}
                 />
               </div>
 
@@ -398,24 +435,44 @@ export default function Home() {
 
               <div className="div">
                 <p>Morning service attendance :</p>
-                <input
-                  spellCheck="false"
-                  className="mt-2 w-full h-12 border-2 border-[#DDDDDD] rounded-[8px] focus:border-[#E2063A] focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px] lg:h-[72px] lg:text-[16px] lg:leading-[26px]"
+                <select
+                  id="morning_service_attendance"
                   {...register("morning_service_attendance")}
-                 placeholder="Input Number"
-                  type="number"
-                />
+                  value={morning}
+                  className="mt-2 w-full h-12 border-2 border-[#DDDDDD] rounded-[8px] focus:border-[#E2063A] focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px] lg:h-[72px] lg:text-[16px] lg:leading-[26px]"
+                  onChange={(e) => {
+                    setMorning(e.target.value); // Update local state
+                    // setValue("country", e.target.value); // Update React Hook Form
+                  }}
+                >
+                  <option value="">Select</option>
+                  {morningServiceAttendance.map((data, index) => (
+                    <option key={index} value={data}>
+                      {data}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div className="div">
                 <p>Regular service attendance :</p>
-                <input
-                  spellCheck="false"
-                  className="mt-2 w-full h-12 border-2 border-[#DDDDDD] rounded-[8px] focus:border-[#E2063A] focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px] lg:h-[72px] lg:text-[16px] lg:leading-[26px]"
+                <select
+                  id="regular_service_attendance"
                   {...register("regular_service_attendance")}
-                 placeholder="Input Number"
-                  type="string"
-                />
+                  value={regular}
+                  className="mt-2 w-full h-12 border-2 border-[#DDDDDD] rounded-[8px] focus:border-[#E2063A] focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px] lg:h-[72px] lg:text-[16px] lg:leading-[26px]"
+                  onChange={(e) => {
+                    setRegular(e.target.value); // Update local state
+                    // setValue("country", e.target.value); // Update React Hook Form
+                  }}
+                >
+                  <option value="">Select</option>
+                  {regularServiceAttendance.map((data, index) => (
+                    <option key={index} value={data}>
+                      {data}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div className="div">
@@ -424,8 +481,13 @@ export default function Home() {
                   spellCheck="false"
                   className="mt-2 w-full h-12 border-2 border-[#DDDDDD] rounded-[8px] focus:border-[#E2063A] focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px] lg:h-[72px] lg:text-[16px] lg:leading-[26px]"
                   {...register("sermons_or_bible_study_listened_to")}
-                 placeholder="Input Number"
+                  placeholder="Input Number"
                   type="number"
+                  onKeyDown={(e) => {
+                    if (e.key === "e" || e.key === "E" || e.key === "+" || e.key === "-") {
+                      e.preventDefault();
+                    }
+                  }}
                 />
               </div>
 
@@ -435,8 +497,13 @@ export default function Home() {
                   spellCheck="false"
                   className="mt-2 w-full h-12 border-2 border-[#DDDDDD] rounded-[8px] focus:border-[#E2063A] focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px] lg:h-[72px] lg:text-[16px] lg:leading-[26px]"
                   {...register("articles_written")}
-                 placeholder="Input Number"
+                  placeholder="Input Number"
                   type="number"
+                  onKeyDown={(e) => {
+                    if (e.key === "e" || e.key === "E" || e.key === "+" || e.key === "-") {
+                      e.preventDefault();
+                    }
+                  }}
                 />
               </div>
 
@@ -463,18 +530,18 @@ export default function Home() {
                   spellCheck="false"
                   className="mt-2 w-full h-32 border-2 border-[#DDDDDD] rounded-[8px] focus:border-[#E2063A] focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px]  lg:text-[16px] lg:leading-[26px]"
                   {...register("daily_reflection")}
-                 placeholder=""
+                  placeholder=""
                   type="string"
                 />
               </div>
 
               <div className="div">
-                <p>Thanksgiving :</p>
+                <p>Thanks giving :</p>
                 <textarea
                   spellCheck="false"
                   className="mt-2 h-32 w-full  border-2 border-[#DDDDDD] rounded-[8px] focus:border-[#E2063A] focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px]  lg:text-[16px] lg:leading-[26px]"
                   {...register("thanksgiving")}
-                 placeholder=""
+                  placeholder=""
                   type="string"
                 />
               </div>
@@ -485,7 +552,7 @@ export default function Home() {
                   spellCheck="false"
                   className="mt-2 w-full h-32 border-2 border-[#DDDDDD] rounded-[8px] focus:border-[#E2063A] focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px]  lg:text-[16px] lg:leading-[26px]"
                   {...register("repentance_or_struggles")}
-                 placeholder=""
+                  placeholder=""
                   type="string"
                 />
               </div>
@@ -496,7 +563,7 @@ export default function Home() {
                   spellCheck="false"
                   className="mt-2 w-full h-32 border-2 border-[#DDDDDD] rounded-[8px] focus:border-[#E2063A] focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px]  lg:text-[16px] lg:leading-[26px]"
                   {...register("prayer_requests")}
-                 placeholder=""
+                  placeholder=""
                   type="string"
                 />
               </div>
@@ -507,7 +574,7 @@ export default function Home() {
                   spellCheck="false"
                   className="mt-2 w-full h-32 border-2 border-[#DDDDDD] rounded-[8px] focus:border-[#E2063A] focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px]  lg:text-[16px] lg:leading-[26px]"
                   {...register("overall_reflection_on_the_day")}
-                 placeholder=""
+                  placeholder=""
                   type="string"
                 />
               </div>
@@ -518,16 +585,18 @@ export default function Home() {
                   spellCheck="false"
                   className="mt-2 w-full h-32 border-2 border-[#DDDDDD] rounded-[8px] focus:border-[#E2063A] focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px]  lg:text-[16px] lg:leading-[26px]"
                   {...register("three_things_must_do_tomorrow")}
-                 placeholder=""
+                  placeholder=""
                   type="string"
                 />
               </div>
             </div>
-                <p className="mt-10">Button will be active when all input boxes are filled</p>
+            <p className="mt-10">
+              Button will be active when all input boxes are filled
+            </p>
             <button
               type="submit"
               className="bg-[#E2063A] mt-4 text-white  rounded-full relative overflow-hidden group lg:h-[72px] lg:w-full  w-[100%]"
-             /*  disabled={!areAllFieldsFilled()} */
+              disabled={!areAllFieldsFilled()}
             >
               <div
                 className={`${
@@ -558,7 +627,6 @@ export default function Home() {
               </div>
             </button>
           </form>
-          
         </div>
       </div>
     </>

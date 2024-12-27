@@ -12,7 +12,6 @@ export default function Alldata() {
 
   if (isAdmin) {
   } else {
-    console.log("yes");
     return <Navigate to="/" />;
   }
 
@@ -171,14 +170,6 @@ export default function Alldata() {
     ],
   };
 
-  /* 
-  useEffect(() => {
-    if (isAdmin) {
-    } else {
-      navigate("/");
-    
-    }
-  }, [isAdmin]); */
 
   const includedFields = [
     "name",
