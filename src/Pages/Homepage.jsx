@@ -93,6 +93,7 @@ export default function Home() {
     "South Sudan",
     "Sudan",
     "Togo",
+    "Tanzania",
     "Tunisia",
     "Uganda",
     "Zambia",
