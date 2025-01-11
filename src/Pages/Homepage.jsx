@@ -570,11 +570,11 @@ export default function Home() {
               </div>
 
               <div className="div">
-                <p>Overall Reflection on the day :</p>
+                <p>Overall Reflection and evaluation on the day :</p>
                 <textarea
                   spellCheck="false"
                   className="mt-2 w-full h-32 border-2 border-[#DDDDDD] rounded-[8px] focus:border-[#E2063A] focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px]  lg:text-[16px] lg:leading-[26px]"
-                  {...register("overall_reflection_on_the_day")}
+                  {...register("overall_reflection_and_evaluation_on_the_day")}
                   placeholder=""
                   type="string"
                 />

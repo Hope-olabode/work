@@ -101,7 +101,7 @@ export default function Alldata() {
     "thanksgiving",
     "repentance_or_struggles",
     "prayer_requests",
-    "overall_reflection_on_the_day",
+    "overall_reflection_and_evaluation_on_the_day",
     "three_things_must_do_tomorrow",
     "_id",
     "createdAt",
