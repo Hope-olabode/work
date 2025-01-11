@@ -581,6 +581,17 @@ export default function Home() {
               </div>
 
               <div className="div">
+                <p>Other work done today :</p>
+                <textarea
+                  spellCheck="false"
+                  className="mt-2 w-full h-32 border-2 border-[#DDDDDD] rounded-[8px] focus:border-[#E2063A] focus:outline-none pl-6 pr-2 font-poopins text-[14px] leading-[22px]  lg:text-[16px] lg:leading-[26px]"
+                  {...register("other_work_done_today")}
+                  placeholder=""
+                  type="string"
+                />
+              </div>
+
+              <div className="div">
                 <p>3 things must do tomorrow :</p>
                 <textarea
                   spellCheck="false"

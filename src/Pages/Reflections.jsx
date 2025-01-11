@@ -179,6 +179,7 @@ export default function Alldata() {
     "prayer_requests",
     "overall_reflection_and_evaluation_on_the_day",
     "three_things_must_do_tomorrow",
+    "other_work_done_today"
   ];
 
   return (

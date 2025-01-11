@@ -193,6 +193,7 @@ export default function Alldata() {
     "createdAt",
     "updatedAt",
     "__v",
+    "other_work_done_today"
   ];
 
   const africanCountriesByRegion = {
