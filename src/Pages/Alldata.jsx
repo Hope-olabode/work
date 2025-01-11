@@ -183,7 +183,7 @@ export default function Alldata() {
   };
 
   const excludedFields = [
-    "daily_reflection",
+    "sermon_reflection",
     "thanksgiving",
     "repentance_or_struggles",
     "prayer_requests",

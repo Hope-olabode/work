@@ -173,7 +173,7 @@ export default function Alldata() {
 
   const includedFields = [
     "name",
-    "daily_reflection",
+    "sermon_reflection",
     "thanksgiving",
     "repentance_or_struggles",
     "prayer_requests",
