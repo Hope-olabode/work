@@ -53,7 +53,7 @@ function CustomDateForm() {
 
     const data = {
       date: realDate,
-      userName: localStorage.getItem("userName")
+      user_name: localStorage.getItem("userName")
     }
      
     console.log(typeof realDate);
